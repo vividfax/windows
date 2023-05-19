@@ -94,13 +94,8 @@ function draw() {
 
     if (allDead) windows.push(new Window(windows.length));
 
-    displayBackground();
-    fill(150);
-    noStroke();
-    rect(0, 0, width, height-targetsVisualCount);
-    stroke(0);
-    strokeWeight(2);
-    line(0, height-targetsVisualCount, width, height-targetsVisualCount);
+    background(150);
+    // displayBackground();
 
     for (let i = 0; i < circles.length; i++) {
         circles[i].update();
@@ -167,7 +162,6 @@ function mouseReleased() {
 
 function displayBackground() {
 
-    background(150);
     stroke(0);
     strokeWeight(2);
 
@@ -175,4 +169,11 @@ function displayBackground() {
 
         line(i, 0, 0, i);
     }
+
+    fill(150);
+    noStroke();
+    rect(0, 0, width, height-targetsVisualCount);
+    stroke(0);
+    strokeWeight(2);
+    line(0, height-targetsVisualCount, width, height-targetsVisualCount);
 }

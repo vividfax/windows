@@ -300,6 +300,7 @@ class Window {
         this.displayUI();
 
         fill(0);
+        noStroke();
 
         if (!this.dead && this.shooting) {
             rect(this.x+3, this.y+3, this.w+this.xOffset, this.h+30+this.yOffset);
