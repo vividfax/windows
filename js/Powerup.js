@@ -28,11 +28,10 @@ class Powerup {
             }
             if (this.overlapWithShooter(windows[i])) {
 
-                if (this.type == "health" && windows[i].health >= windows[i].maxHealth) continue;
-
-                this.bestowPower(windows[i]);
-                this.destruct();
-                if (this.type != "expand" && this.type != "health") windows[i].animatePowerup = true;
+                if (this.bestowPower(windows[i])) {
+                    this.destruct();
+                    if (this.type != "expand" && this.type != "health" && this.type != "new") windows[i].animatePowerup = true;
+                }
             }
         }
     }
@@ -64,11 +63,18 @@ class Powerup {
 
         if (this.type == "expand") {
             shooter.levelGrowth += 30;
+            shooter.maxHealth += 10;
+            return true;
         } else if (this.type == "health") {
+            if (shooter.health >= shooter.maxHealth) return false;
             shooter.health += 30;
             if (shooter.health > shooter.maxHealth) shooter.health = shooter.maxHealth;
+            return true;
+        } else if (this.type == "new") {
+            windows.push(new Window(windows.length));
+            return true;
         } else {
-            shooter.gun.upgrade(this.type);
+            return shooter.gun.upgrade(this.type);
         }
     }
 

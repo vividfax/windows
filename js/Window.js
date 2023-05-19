@@ -56,7 +56,7 @@ class Window {
         this.dead = false;
 
         this.animatePowerup = false;
-        this.animatePowerupTimer = -this.w-100;
+        this.animatePowerupTimer = -this.w-(this.w+this.h)/4;
     }
 
     update() {
@@ -71,9 +71,9 @@ class Window {
 
         if (this.animatePowerup) {
             this.animatePowerupTimer += 15;
-            if (this.animatePowerupTimer > this.w+100) {
+            if (this.animatePowerupTimer > this.w+(this.w+this.h)/4) {
                 this.animatePowerup = false;
-                this.animatePowerupTimer = -this.w-100;
+                this.animatePowerupTimer = -this.w-(this.w+this.h)/4;
             }
         }
 
@@ -94,7 +94,7 @@ class Window {
             if (targets[i].inRange(this)) this.inRange = true;
         }
 
-        if (this.inRange && this.guns.length > 0) this.shooting = true;
+        if (this.inRange) this.shooting = true;
 
         if (!this.inRange && !this.moving) {
             this.y += sin((frameCount+this.bobOffset)*3)*0.2;
@@ -278,12 +278,13 @@ class Window {
         }
 
         if (this.animatePowerup) {
-            this.canvas.strokeWeight(104);
+            let thickness = (this.h+this.w)/4;
+            this.canvas.strokeWeight(thickness+4);
             this.canvas.stroke(0);
-            this.canvas.line(-100, -this.animatePowerupTimer-100, this.w+100, this.w-this.animatePowerupTimer+100);
-            this.canvas.strokeWeight(100);
+            this.canvas.line(-thickness, -this.animatePowerupTimer-thickness, this.w+thickness, this.w-this.animatePowerupTimer+thickness);
+            this.canvas.strokeWeight(thickness);
             this.canvas.stroke(255);
-            this.canvas.line(-100, -this.animatePowerupTimer-100, this.w+100, this.w-this.animatePowerupTimer+100);
+            this.canvas.line(-thickness, -this.animatePowerupTimer-thickness, this.w+thickness, this.w-this.animatePowerupTimer+thickness);
         }
 
         this.canvas.translate(0, -30);

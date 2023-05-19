@@ -2,7 +2,7 @@ class Target {
 
     constructor(x, y) {
 
-        let padding = 100;
+        let padding = 150;
         this.x = x ? x : random(padding, width-padding);
         this.y = y ? y : random(padding, height-padding);
         this.radius = score > 10 ? random(25, 100) : 50;
@@ -37,12 +37,19 @@ class Target {
         if (newWindowCount >= newWindowInterval && windows.length < targetColours.length) {
             newWindowCount = 0;
             newWindowInterval *= 3;
-            windows.push(new Window(windows.length));
+            powerups.push(new Powerup(this.x, this.y, "new"));
+            // windows.push(new Window(windows.length));
+        } else {
+            powerups.push(new Powerup(this.x, this.y));
         }
 
         score++;
+        newRewardCount++;
 
-        powerups.push(new Powerup(this.x, this.y));
+        // if (newRewardCount % newRewardInterval == 0) {
+        //     newRewardCount = 0;
+        //     newRewardInterval++;
+        // }
 
         let index = targets.indexOf(this);
         if (index != -1) targets.splice(index, 1);

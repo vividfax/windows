@@ -23,8 +23,17 @@ class Gun {
 
     upgrade(type) {
 
-        if (type == "faster" && this.interval > 0) this.interval -= 2;
-        else if (type == "more") this.numberOfShots++;
-        else if (type == "bigger") this.shotSize += 2;
+        if (type == "faster") {
+            if (this.interval <= 0) return false;
+            this.interval--;
+        } else if (type == "more") {
+            this.numberOfShots++;
+        } else if (type == "bigger") {
+            if (this.shotSize > 20) return false;
+            this.shotSize += 0.5;
+            this.interval++;
+        }
+
+        return true;
     }
 }

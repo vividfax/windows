@@ -10,6 +10,8 @@ let newWindowCount = 0;
 let newWindowInterval = 3;
 let score = 0;
 let targetsVisualCount = 0;
+let newRewardCount = 0;
+let newRewardInterval = 1;
 
 let backgroundLayer;
 
@@ -28,6 +30,7 @@ function preload() {
     powerupImages.bigger = loadImage("./images/bigger.png");
     powerupImages.expand = loadImage("./images/expand.png");
     powerupImages.health = loadImage("./images/health.png");
+    powerupImages.new = loadImage("./images/new.png");
 }
 
 function setup() {
@@ -129,7 +132,7 @@ function draw() {
 
     if (frameCount%targetTimer == 0 && interacted) {
         targets.push(new Target());
-        if (targetTimer > 60*1.5) targetTimer -= 3;
+        if (targetTimer > 60*1) targetTimer -= 3;
     }
 
     strokeWeight(6);
