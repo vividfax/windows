@@ -95,6 +95,10 @@ class Powerup {
         if (this.x+this.visualRadius/2 > wndw.x & this.x-this.visualRadius/2 < wndw.x2 && this.y+this.visualRadius/2 > wndw.y && this.y-this.visualRadius/2 < wndw.y2) {
             cnvs.imageMode(CENTER);
             cnvs.image(powerupImages[this.type], this.x-wndw.x, this.y-wndw.y, this.visualRadius, this.visualRadius);
+            cnvs.stroke(0);
+            cnvs.strokeWeight(2);
+            cnvs.noFill();
+            cnvs.ellipse(this.x-wndw.x, this.y-wndw.y, this.visualRadius-1, this.visualRadius-1);
         }
     }
 }
