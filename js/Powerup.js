@@ -23,8 +23,8 @@ class Powerup {
 
         for (let i = 0; i < windows.length; i++) {
             if (this.collideWithShooter(windows[i])) {
-                this.x = lerp(this.x, windows[i].cX, 0.1);
-                this.y = lerp(this.y, windows[i].cY, 0.1);
+                this.x = lerp(this.x, windows[i].cX, 0.15);
+                this.y = lerp(this.y, windows[i].cY, 0.15);
             }
             if (this.overlapWithShooter(windows[i])) {
 
@@ -43,7 +43,7 @@ class Powerup {
 
     overlapWithShooter(collider) {
 
-        if (dist(this.x, this.y, collider.cX, collider.cY) < 1) return true;
+        if (dist(this.x, this.y, collider.cX, collider.cY) < 2) return true;
     }
 
     bestowPower(shooter) {

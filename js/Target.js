@@ -1,3 +1,5 @@
+let bigBadCount = 0;
+
 class Target {
 
     constructor(x, y) {
@@ -6,6 +8,11 @@ class Target {
         this.x = x ? x : random(padding, width-padding);
         this.y = y ? y : random(padding, height-padding);
         this.radius = score > 10 ? random(25, 100) : 50;
+        if (score > 30 && bigBadCount < 1 && random() < 0.05) {
+            this.radius = random(200, 300);
+            bigBadCount++;
+            this.bigBad = true;
+        }
         this.visualRadius = 0;
 
         while (this.collidingWithShooter()) {
@@ -37,6 +44,10 @@ class Target {
     }
 
     destruct() {
+
+        if (this.bigBad) {
+            bigBadCount--;
+        }
 
         newWindowCount++;
         if (newWindowCount >= newWindowInterval && windows.length < targetColours.length) {
