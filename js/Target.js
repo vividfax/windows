@@ -8,6 +8,12 @@ class Target {
         this.radius = score > 10 ? random(25, 100) : 50;
         this.visualRadius = 0;
 
+        while (this.collidingWithShooter()) {
+            this.x = x ? x : random(padding, width-padding);
+            this.y = y ? y : random(padding, height-padding);
+        }
+
+
         this.velX = random(-1, 1);
         this.velY = random(-1, 1);
     }
@@ -59,6 +65,15 @@ class Target {
 
         if (this.x+this.visualRadius/2 > wndw.x & this.x-this.visualRadius/2 < wndw.x2 && this.y+this.visualRadius/2 > wndw.y && this.y-this.visualRadius/2 < wndw.y2) {
         return true;
+        }
+    }
+
+    collidingWithShooter() {
+
+        for (let i = 0; i < windows.length; i++) {
+            if (dist(this.x, this.y, windows[i].cX, windows[i].cY) < this.radius/2 + 30/2 + 20) {
+                return true;
+            }
         }
     }
 
