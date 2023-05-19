@@ -3,7 +3,7 @@ let targetColours = ["#FFFF00", "#FF00FF","#00FFFF","#FF0000","#00FF00","#0000FF
 let shooterTypes = ["bullet"];
 let consonants = "BCDFGHKLMNPRSTW";
 let vowels = "AEIOU";
-let ignoreNames = ["FUK", "FUC", "CUC", "CUK", "KUK", "KUC", "KIL"];
+let ignoreNames = ["FUK", "FUC", "CUC", "CUK", "KUK", "KUC", "KIL", "CUM", "KUM"];
 
 class Window {
 

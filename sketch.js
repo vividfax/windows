@@ -14,6 +14,8 @@ let backgroundLayer;
 
 let macFont;
 
+let interacted = false;
+
 function preload() {
 
     macFont = loadFont("./fonts/VT323-Regular.ttf");
@@ -87,7 +89,7 @@ function draw() {
         windows[i].display();
     }
 
-    if (frameCount%targetTimer == 0) {
+    if (frameCount%targetTimer == 0 && interacted) {
         targets.push(new Target());
         if (targetTimer > 60*1.5) targetTimer -= 3;
     }
@@ -101,7 +103,10 @@ function draw() {
 }
 
 function mousePressed() {
+
     for (let i = windows.length-1; i >= 0; i--) {
+
+        if (!interacted) interacted = true;
         if (windows[i].hover()) {
         if (windows[i].hoverBar()) windows[i].moving = true;
         let thisWindow = windows[i];
