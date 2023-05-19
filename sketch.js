@@ -86,6 +86,9 @@ function draw() {
 
     for (let i = 0; i < windows.length; i++) {
         windows[i].update();
+    }
+
+    for (let i = 0; i < windows.length; i++) {
         windows[i].display();
     }
 

@@ -40,6 +40,8 @@ class Window {
         this.levelGrowth = 0;
 
         this.bobOffset = random(360);
+        this.xOffset = 0;
+        this.yOffset = 0;
 
         this.name = this.generateName();
         while (ignoreNames.includes(this.name)) this.name = this.generateName();
@@ -64,13 +66,13 @@ class Window {
         this.inRange = false;
 
         for (let i = 0; i < targets.length; i++) {
-        if (targets[i].inRange(this)) this.inRange = true;
+            if (targets[i].inRange(this)) this.inRange = true;
         }
 
         if (!this.inRange && !this.moving) {
-        this.y += sin((frameCount+this.bobOffset)*3)*0.2;
-        this.y2 = this.y+this.h;
-        this.cY = this.y+this.h/2;
+            this.y += sin((frameCount+this.bobOffset)*3)*0.2;
+            this.y2 = this.y+this.h;
+            this.cY = this.y+this.h/2;
         }
     }
 
@@ -186,31 +188,38 @@ class Window {
 
     display() {
 
+        this.xOffset = random(-1, 1);
+        this.yOffset = random(-1, 1);
+
         this.canvas.push();
         this.canvas.background(255);
         this.canvas.stroke(0);
         this.canvas.strokeWeight(2);
         this.canvas.translate(0, 30);
 
+        if (this.inRange) this.canvas.translate(-this.xOffset, -this.yOffset);
+
         for (let i = 0; i < circles.length; i++) {
-        circles[i].display(this);
+            circles[i].display(this);
         }
 
         for (let i = 0; i < targets.length; i++) {
-        targets[i].display(this);
+            targets[i].display(this);
         }
 
         for (let i = 0; i < sprays.length; i++) {
-        sprays[i].display(this);
+            sprays[i].display(this);
         }
 
         for (let i = 0; i < windows.length; i++) {
-        windows[i].displayShooter(this);
+            windows[i].displayShooter(this);
         }
 
         for (let i = 0; i < bullets.length; i++) {
-        bullets[i].display(this);
+            bullets[i].display(this);
         }
+
+        if (this.inRange) this.canvas.translate(this.xOffset, this.yOffset);
 
         this.canvas.translate(0, -30);
         this.canvas.stroke(0);
@@ -227,13 +236,11 @@ class Window {
         fill(0);
 
         if (this.inRange) {
-        let xOffset = random(-1, 1);
-        let yOffset = random(-1, 1);
-        rect(this.x+3, this.y+3, this.w+xOffset, this.h+30+yOffset);
-        image(this.canvas, this.x+xOffset, this.y+yOffset);
+            rect(this.x+3, this.y+3, this.w+this.xOffset, this.h+30+this.yOffset);
+            image(this.canvas, this.x+this.xOffset, this.y+this.yOffset);
         } else {
-        rect(this.x+3, this.y+3, this.w, this.h+30);
-        image(this.canvas, this.x, this.y);
+            rect(this.x+3, this.y+3, this.w, this.h+30);
+            image(this.canvas, this.x, this.y);
         }
     }
 
@@ -241,12 +248,14 @@ class Window {
 
         let cnvs = wndw.canvas;
 
+        if (this.inRange) cnvs.translate(this.xOffset, this.yOffset);
         cnvs.stroke(0);
         cnvs.fill(255);
         cnvs.ellipse(this.cX-wndw.x, this.cY-wndw.y, 30);
         cnvs.ellipse(this.cX-wndw.x, this.cY-wndw.y, 20);
         cnvs.ellipse(this.cX-wndw.x, this.cY-wndw.y, 10);
-        return true;
+
+        if (this.inRange) cnvs.translate(-this.xOffset, -this.yOffset);
     }
 
     displayUI() {
