@@ -11,6 +11,7 @@ class Powerup {
         this.visualRadius = -30;
 
         this.type = type ? type : random(powerupTypes);
+        this.type = "health";
 
         this.pulseOffset = random(360);
     }
@@ -27,6 +28,9 @@ class Powerup {
                 this.y = lerp(this.y, windows[i].cY, 0.1);
             }
             if (this.overlapWithShooter(windows[i])) {
+
+                if (this.type == "health" && windows[i].health >= windows[i].maxHealth) continue;
+
                 this.bestowPower(windows[i]);
                 this.destruct();
                 if (this.type != "expand" && this.type != "health") windows[i].animatePowerup = true;
