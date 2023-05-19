@@ -63,6 +63,8 @@ class Powerup {
 
         if (this.type == "expand") {
             shooter.levelGrowth += 30;
+            shooter.health += 10;
+            shooter.visualHealth += 10;
             shooter.maxHealth += 10;
             return true;
         } else if (this.type == "health") {
