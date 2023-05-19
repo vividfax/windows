@@ -7,7 +7,7 @@ let powerups = [];
 
 let targetTimer = 60*5;
 let newWindowCount = 0;
-let newWindowInterval = 3;
+let newWindowInterval = 5;
 let score = 0;
 let targetsVisualCount = 0;
 let newRewardCount = 0;
