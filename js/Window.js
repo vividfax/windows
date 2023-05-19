@@ -12,6 +12,12 @@ class Window {
         let padding = 150;
         this.x = x ? x : random(padding, width-padding);
         this.y = y ? y : random(padding, height-padding);
+
+        while (this.collidingWithTarget()) {
+            this.x = x ? x : random(padding, width-padding);
+            this.y = y ? y : random(padding, height-padding);
+        }
+
         let wVsH = int(random(100));
         this.w = w ? w : 130+wVsH;
         this.h = h ? h : 130+100-wVsH-30;
@@ -231,6 +237,15 @@ class Window {
     collide(collider) {
 
         if (dist(this.cX, this.cY, collider.x, collider.y) < 30/2 + collider.radius/2) return true;
+    }
+
+    collidingWithTarget() {
+
+        for (let i = 0; i < targets.length; i++) {
+            if (dist(this.x, this.y, targets[i].x, targets[i].y) < 30/2 + targets[i].radius/2 + 20) {
+                return true;
+            }
+        }
     }
 
     display() {

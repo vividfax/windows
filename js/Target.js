@@ -13,7 +13,6 @@ class Target {
             this.y = y ? y : random(padding, height-padding);
         }
 
-
         this.velX = random(-1, 1);
         this.velY = random(-1, 1);
     }
@@ -28,8 +27,8 @@ class Target {
         this.velY = random(-1, 1);
         }
 
-        this.x += this.velX*0.2;
-        this.y += this.velY*0.2;
+        this.x += this.velX*0.4;
+        this.y += this.velY*0.4;
 
         if (this.x > width) this.x = 0;
         else if (this.x < 0) this.x = width;
