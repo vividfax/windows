@@ -11,7 +11,6 @@ class Powerup {
         this.visualRadius = -30;
 
         this.type = type ? type : random(powerupTypes);
-        this.type = "health";
 
         this.pulseOffset = random(360);
     }
