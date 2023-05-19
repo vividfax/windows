@@ -35,12 +35,14 @@ class Target {
 
         newWindowCount++;
         if (newWindowCount >= newWindowInterval && windows.length < targetColours.length) {
-        newWindowCount = 0;
-        newWindowInterval *= 3;
-        windows.push(new Window(windows.length));
+            newWindowCount = 0;
+            newWindowInterval *= 3;
+            windows.push(new Window(windows.length));
         }
 
         score++;
+
+        powerups.push(new Powerup(this.x, this.y));
 
         let index = targets.indexOf(this);
         if (index != -1) targets.splice(index, 1);
@@ -58,10 +60,10 @@ class Target {
         let cnvs = wndw.canvas;
 
         if (this.x+this.visualRadius/2 > wndw.x & this.x-this.visualRadius/2 < wndw.x2 && this.y+this.visualRadius/2 > wndw.y && this.y-this.visualRadius/2 < wndw.y2) {
-        cnvs.fill(wndw.targetColour);
-        cnvs.noStroke();
-        cnvs.ellipse(this.x-wndw.x, this.y-wndw.y, this.visualRadius);
-        return true;
+            cnvs.fill(wndw.targetColour);
+            cnvs.noStroke();
+            cnvs.ellipse(this.x-wndw.x, this.y-wndw.y, this.visualRadius);
+            return true;
         }
     }
 }

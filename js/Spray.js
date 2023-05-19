@@ -30,7 +30,6 @@ class Spray {
     }
 
     destruct() {
-        console.log('spra')
 
         let index = sprays.indexOf(this);
         if (index != -1) sprays.splice(index, 1);

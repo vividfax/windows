@@ -3,6 +3,7 @@ let circles = [];
 let targets = [];
 let bullets = [];
 let sprays = [];
+let powerups = [];
 
 let targetTimer = 60*5;
 let newWindowCount = 0;
@@ -16,9 +17,17 @@ let macFont;
 
 let interacted = false;
 
+let powerupImages = {};
+
 function preload() {
 
     macFont = loadFont("./fonts/VT323-Regular.ttf");
+
+    powerupImages.more = loadImage("./images/more.png");
+    powerupImages.faster = loadImage("./images/faster.png");
+    powerupImages.bigger = loadImage("./images/bigger.png");
+    powerupImages.expand = loadImage("./images/expand.png");
+    powerupImages.health = loadImage("./images/health.png");
 }
 
 function setup() {
@@ -40,16 +49,27 @@ function setup() {
         windows.push(new Window(i, "bullet", 180, 180-30, width/2-90, height/2-90-15));
     }
 
+    // for (let i = 0; i < 1; i++) {
+    //     let x = random(width/2-50, width/2+50);
+    //     let y = random(height/2-50, height/2+50);
+    //     let distance = dist(width/2, height/2, x, y);
+    //     while (distance < 50) {
+    //         x = random(width/2-50, width/2+50);
+    //         y = random(height/2-50, height/2+50);
+    //         distance = dist(width/2, height/2, x, y);
+    //     }
+    //     powerups.push(new Powerup(x, y, "faster"));
+    // }
+
     let padding = 150;
     for (let i = 0; i < 1; i++) {
         let x = random(padding, width-padding);
         let y = random(padding, height-padding);
         let distance = dist(width/2, height/2, x, y);
-        console.log(distance)
         while (distance < 200) {
-        x = random(padding, width-padding);
-        y = random(padding, height-padding);
-        distance = dist(width/2, height/2, x, y);
+            x = random(padding, width-padding);
+            y = random(padding, height-padding);
+            distance = dist(width/2, height/2, x, y);
         }
         targets.push(new Target(x, y));
     }
@@ -59,6 +79,17 @@ function draw() {
 
     if (targetsVisualCount+0.5 < targets.length*height/50) targetsVisualCount += 0.05;
     else if (targetsVisualCount-0.5 > targets.length*height/50) targetsVisualCount -= 0.5;
+
+    let allDead = true;
+
+    for (let i = 0; i < windows.length; i++) {
+        if (!windows[i].dead) {
+            allDead = false;
+            break;
+        }
+    }
+
+    if (allDead) windows.push(new Window(windows.length));
 
     displayBackground();
     fill(150);
@@ -86,6 +117,10 @@ function draw() {
 
     for (let i = 0; i < windows.length; i++) {
         windows[i].update();
+    }
+
+    for (let i = 0; i < powerups.length; i++) {
+        powerups[i].update();
     }
 
     for (let i = 0; i < windows.length; i++) {
