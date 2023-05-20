@@ -237,7 +237,11 @@ class Window {
             this.visualHealth += 0.3;
         }
 
-        if (this.visualHealth <= 0) this.dead = true;
+        if (this.visualHealth <= 0) {
+            this.dead = true;
+            score -= 10;
+            if (score < 0) score = 0;
+        }
     }
 
     generateName() {
