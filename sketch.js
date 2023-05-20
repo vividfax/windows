@@ -165,12 +165,14 @@ function mousePressed() {
     for (let i = windows.length-1; i >= 0; i--) {
 
         if (!interacted) interacted = true;
-            if (windows[i].hover()) {
-            if (windows[i].hoverBar()) windows[i].moving = true;
+        if (windows[i].hover()) {
+            if (windows[i].hoverBar()) {
+                windows[i].moving = true;
+                cursorImage = cursorImages.grab;
+            }
             let thisWindow = windows[i];
             windows.splice(i, 1);
             windows.push(thisWindow);
-            cursorImage = cursorImages.grab;
             return;
         }
     }
