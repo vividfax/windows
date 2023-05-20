@@ -1,4 +1,4 @@
-class BackgroundCircle {
+class Folder {
 
     constructor() {
 

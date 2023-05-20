@@ -56,18 +56,13 @@ class Target {
             newWindowCount = 0;
             newWindowInterval *= 2.5;
             powerups.push(new Powerup(this.x, this.y, "new"));
-            // windows.push(new Window(windows.length));
+        } else if (score % 12 == 11) {
+            powerups.push(new Powerup(this.x, this.y, "spam"));
         } else {
             powerups.push(new Powerup(this.x, this.y));
         }
 
         score++;
-        newRewardCount++;
-
-        // if (newRewardCount % newRewardInterval == 0) {
-        //     newRewardCount = 0;
-        //     newRewardInterval++;
-        // }
 
         let index = targets.indexOf(this);
         if (index != -1) targets.splice(index, 1);
@@ -83,7 +78,7 @@ class Target {
     collidingWithShooter() {
 
         for (let i = 0; i < windows.length; i++) {
-            if (dist(this.x, this.y, windows[i].cX, windows[i].cY) < this.radius/2 + 30/2 + 20) {
+            if (windows[i] instanceof Window && dist(this.x, this.y, windows[i].cX, windows[i].cY) < this.radius/2 + 30/2 + 20) {
                 return true;
             }
         }

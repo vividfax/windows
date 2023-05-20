@@ -15,6 +15,7 @@ class Bullet {
     update() {
 
         this.lifeTime++;
+        this.radius -= 0.01;
 
         if (this.x+this.radius > width || this.x-this.radius < 0 || this.y+this.radius > height || this.y-this.radius < 0) this.destruct();
 

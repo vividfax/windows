@@ -273,8 +273,8 @@ class Window {
 
             if (this.shooting) this.canvas.translate(-this.xOffset, -this.yOffset);
 
-            for (let i = 0; i < circles.length; i++) {
-                circles[i].display(this);
+            for (let i = 0; i < folders.length; i++) {
+                folders[i].display(this);
             }
 
             for (let i = 0; i < targets.length; i++) {
@@ -286,7 +286,7 @@ class Window {
             }
 
             for (let i = 0; i < windows.length; i++) {
-                windows[i].displayShooter(this);
+                if (windows[i] instanceof Window) windows[i].displayShooter(this);
             }
 
             for (let i = 0; i < bullets.length; i++) {

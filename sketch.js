@@ -1,9 +1,10 @@
 let windows = [];
-let circles = [];
+let folders = [];
 let targets = [];
 let bullets = [];
 let sprays = [];
 let powerups = [];
+let spamWindows = [];
 
 let targetTimer = 60*5;
 let newWindowCount = 0;
@@ -20,6 +21,7 @@ let macFont;
 let interacted = false;
 
 let powerupImages = {};
+let spamImages = [];
 
 function preload() {
 
@@ -31,6 +33,11 @@ function preload() {
     powerupImages.expand = loadImage("./images/expand.png");
     powerupImages.health = loadImage("./images/health.png");
     powerupImages.new = loadImage("./images/new.png");
+    powerupImages.spam = loadImage("./images/spam.png");
+
+    for (let i = 0; i < 10; i++) {
+        spamImages.push(loadImage("./images/spam/"+i+".png"));
+    }
 }
 
 function setup() {
@@ -45,7 +52,7 @@ function setup() {
     shuffle(targetColours, true);
 
     for (let i = 0; i < width*height*0.0002; i++) {
-        circles.push(new BackgroundCircle());
+        folders.push(new Folder());
     }
 
     for (let i = 0; i < 1; i++) {
@@ -65,7 +72,7 @@ function setup() {
     // }
 
     let padding = 150;
-    for (let i = 0; i < 1; i++) {
+    for (let i = 0; i < 3; i++) {
         let x = random(padding, width-padding);
         let y = random(padding, height-padding);
         let distance = dist(width/2, height/2, x, y);
@@ -86,7 +93,7 @@ function draw() {
     let allDead = true;
 
     for (let i = 0; i < windows.length; i++) {
-        if (!windows[i].dead) {
+        if (windows[i] instanceof Window && !windows[i].dead) {
             allDead = false;
             break;
         }
@@ -97,8 +104,8 @@ function draw() {
     background(150);
     // displayBackground();
 
-    for (let i = 0; i < circles.length; i++) {
-        circles[i].update();
+    for (let i = 0; i < folders.length; i++) {
+        folders[i].update();
     }
 
     for (let i = 0; i < targets.length; i++) {
@@ -125,6 +132,11 @@ function draw() {
         windows[i].display();
     }
 
+    for (let i = 0; i < spamWindows.length; i++) {
+        spamWindows[i].update();
+        spamWindows[i].display();
+    }
+
     if (frameCount%targetTimer == 0 && interacted) {
         targets.push(new Target());
         if (targetTimer > 60*1) targetTimer -= 3;
@@ -140,15 +152,27 @@ function draw() {
 
 function mousePressed() {
 
+    for (let i = spamWindows.length-1; i >= 0; i--) {
+
+        if (!interacted) interacted = true;
+            if (spamWindows[i].hover()) {
+            if (spamWindows[i].hoverBar()) spamWindows[i].moving = true;
+            let thisWindow = spamWindows[i];
+            spamWindows.splice(i, 1);
+            spamWindows.push(thisWindow);
+            return;
+        }
+    }
+
     for (let i = windows.length-1; i >= 0; i--) {
 
         if (!interacted) interacted = true;
-        if (windows[i].hover()) {
-        if (windows[i].hoverBar()) windows[i].moving = true;
-        let thisWindow = windows[i];
-        windows.splice(i, 1);
-        windows.push(thisWindow);
-        break;
+            if (windows[i].hover()) {
+            if (windows[i].hoverBar()) windows[i].moving = true;
+            let thisWindow = windows[i];
+            windows.splice(i, 1);
+            windows.push(thisWindow);
+            return;
         }
     }
 }

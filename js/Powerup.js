@@ -25,15 +25,15 @@ class Powerup {
         this.visualRadius += sin((frameCount+this.pulseOffset)*14)*0.3;
 
         for (let i = 0; i < windows.length; i++) {
-            if (this.collideWithShooter(windows[i])) {
+            if (windows[i] instanceof Window && this.collideWithShooter(windows[i])) {
                 this.x = lerp(this.x, windows[i].cX, 0.15);
                 this.y = lerp(this.y, windows[i].cY, 0.15);
             }
-            if (this.overlapWithShooter(windows[i])) {
+            if (windows[i] instanceof Window && this.overlapWithShooter(windows[i])) {
 
                 if (this.bestowPower(windows[i])) {
                     this.destruct();
-                    if (this.type != "expand" && this.type != "health" && this.type != "new") windows[i].animatePowerup = true;
+                    if (this.type != "expand" && this.type != "health" && this.type != "new" && this.type != "spam") windows[i].animatePowerup = true;
                 }
             }
         }
@@ -77,6 +77,9 @@ class Powerup {
             return true;
         } else if (this.type == "new") {
             windows.push(new Window(windows.length));
+            return true;
+        } else if (this.type == "spam") {
+            windows.push(new SpamWindow());
             return true;
         } else {
             return shooter.gun.upgrade(this.type);
