@@ -3,7 +3,7 @@ let targetColours = ["#FFFF00", "#FF00FF","#00FFFF","#FF0000","#00FF00","#0000FF
 let shooterTypes = ["bullet"];
 let consonants = "BCDFGHKLMNPRSTW";
 let vowels = "AEIOU";
-let ignoreNames = ["FUK", "FUC", "CUC", "CUK", "KUK", "KUC", "KIL", "CUM", "KUM", "FAP", "CIS", "NOB", "KEK"];
+let ignoreNames = ["FUK", "FUC", "CUC", "CUK", "KUK", "KUC", "KIL", "CUM", "KUM", "FAP", "CIS", "NOB", "KEK", "CUN"];
 
 class Window {
 
@@ -313,7 +313,7 @@ class Window {
             this.canvas.background(this.targetColour);
         }
 
-        if (this.animatePowerup) {
+        if (!this.dead && this.animatePowerup) {
             let thickness = (this.h+this.w)/4;
             this.canvas.strokeWeight(thickness+4);
             this.canvas.stroke(0);
