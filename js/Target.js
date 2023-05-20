@@ -54,7 +54,7 @@ class Target {
         newWindowCount++;
         if (newWindowCount >= newWindowInterval && windows.length < targetColours.length) {
             newWindowCount = 0;
-            newWindowInterval *= 2.5;
+            newWindowInterval *= 2;
             powerups.push(new Powerup(this.x, this.y, "new"));
         } else if (score % 12 == 11) {
             powerups.push(new Powerup(this.x, this.y, "spam"));
