@@ -4,7 +4,6 @@ let targets = [];
 let bullets = [];
 let sprays = [];
 let powerups = [];
-let spamWindows = [];
 
 let targetTimer = 60*5;
 let newWindowCount = 0;
@@ -22,22 +21,28 @@ let interacted = false;
 
 let powerupImages = {};
 let spamImages = [];
+let cursorImages = {};
+let cursorImage;
 
 function preload() {
 
     macFont = loadFont("./fonts/VT323-Regular.ttf");
 
-    powerupImages.more = loadImage("./images/more.png");
-    powerupImages.faster = loadImage("./images/faster.png");
-    powerupImages.bigger = loadImage("./images/bigger.png");
-    powerupImages.expand = loadImage("./images/expand.png");
-    powerupImages.health = loadImage("./images/health.png");
-    powerupImages.new = loadImage("./images/new.png");
-    powerupImages.spam = loadImage("./images/spam.png");
+    powerupImages.more = loadImage("./images/powerups/more.png");
+    powerupImages.faster = loadImage("./images/powerups/faster.png");
+    powerupImages.bigger = loadImage("./images/powerups/bigger.png");
+    powerupImages.expand = loadImage("./images/powerups/expand.png");
+    powerupImages.health = loadImage("./images/powerups/health.png");
+    powerupImages.new = loadImage("./images/powerups/new.png");
+    powerupImages.spam = loadImage("./images/powerups/spam.png");
 
     for (let i = 0; i < 10; i++) {
         spamImages.push(loadImage("./images/spam/"+i+".png"));
     }
+
+    cursorImages.arrow = loadImage("./images/cursors/arrow.png");
+    cursorImages.point = loadImage("./images/cursors/point.png");
+    cursorImages.grab = loadImage("./images/cursors/grab.png");
 }
 
 function setup() {
@@ -48,6 +53,9 @@ function setup() {
     createCanvas(w, h);
     textAlign(CENTER, CENTER);
     angleMode(DEGREES);
+
+    noCursor();
+    cursorImage = cursorImages.arrow;
 
     shuffle(targetColours, true);
 
@@ -120,8 +128,11 @@ function draw() {
         sprays[i].update();
     }
 
+    if (!mouseIsPressed) cursorImage = cursorImages.arrow;
+
     for (let i = 0; i < windows.length; i++) {
         windows[i].update();
+        if (!mouseIsPressed && windows[i].hoverBar()) cursorImage = cursorImages.point;
     }
 
     for (let i = 0; i < powerups.length; i++) {
@@ -130,11 +141,6 @@ function draw() {
 
     for (let i = 0; i < windows.length; i++) {
         windows[i].display();
-    }
-
-    for (let i = 0; i < spamWindows.length; i++) {
-        spamWindows[i].update();
-        spamWindows[i].display();
     }
 
     if (frameCount%targetTimer == 0 && interacted) {
@@ -148,21 +154,13 @@ function draw() {
     rect(-3, -3, width+6, height+6, 16);
     stroke(0);
     rect(3, 3, width-6, height-6, 10);
+
+    imageMode(CENTER);
+    image(cursorImage, mouseX, mouseY, 50, 50);
+    imageMode(CORNER);
 }
 
 function mousePressed() {
-
-    for (let i = spamWindows.length-1; i >= 0; i--) {
-
-        if (!interacted) interacted = true;
-            if (spamWindows[i].hover()) {
-            if (spamWindows[i].hoverBar()) spamWindows[i].moving = true;
-            let thisWindow = spamWindows[i];
-            spamWindows.splice(i, 1);
-            spamWindows.push(thisWindow);
-            return;
-        }
-    }
 
     for (let i = windows.length-1; i >= 0; i--) {
 
@@ -172,6 +170,7 @@ function mousePressed() {
             let thisWindow = windows[i];
             windows.splice(i, 1);
             windows.push(thisWindow);
+            cursorImage = cursorImages.grab;
             return;
         }
     }
@@ -182,6 +181,8 @@ function mouseReleased() {
     for (let i = 0; i < windows.length; i++) {
         windows[i].moving = false;
     }
+
+    cursorImage = cursorImages.arrow;
 }
 
 function displayBackground() {
