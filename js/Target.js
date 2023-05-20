@@ -40,10 +40,10 @@ class Target {
         this.x += this.velX*this.speed;
         this.y += this.velY*this.speed;
 
-        if (this.x > width) this.x = 0;
-        else if (this.x < 0) this.x = width;
-        if (this.y > height) this.y = 0;
-        else if (this.y < 0) this.y = height;
+        if (this.x > width && this.velX > 0) this.velX *= -1;
+        else if (this.x < 0 && this.velX < 0) this.velX *= -1;
+        if (this.y > height && this.velY > 0) this.velY *= -1;
+        else if (this.y < 50 && this.velY < 0) this.velY *= -1;
     }
 
     destruct() {

@@ -367,12 +367,11 @@ class Window {
 
         let percent = (this.visualHealth/this.maxHealth)*this.w;
 
-        if (this.dead) percent = this.w;
-
         this.canvas.stroke(0);
         this.canvas.strokeWeight(2);
         this.canvas.fill(0);
-        if (this.losingHealth && (int((frameCount+this.healthFlashOffset)/8))%2 == 1) this.canvas.fill(255);
+        if (this.losingHealth && (int((frameCount+this.healthFlashOffset)/8))%2 == 1) this.canvas.fill(this.targetColour);
+        if (this.dead) this.canvas.fill(this.targetColour);
         this.canvas.rect(percent, 30-5, this.w-percent, 4);
         this.canvas.noFill();
         this.canvas.rect(0, 30-5, this.w, 4);
