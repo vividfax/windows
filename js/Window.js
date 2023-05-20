@@ -68,6 +68,7 @@ class Window {
     update() {
 
         this.move();
+        this.moveFromTopEdge();
 
         if (this.dead) return;
 
@@ -134,6 +135,15 @@ class Window {
         this.y2 = this.y+this.h;
         this.cX = this.x+this.w/2;
         this.cY = this.y+this.h/2;
+    }
+
+    moveFromTopEdge() {
+
+        if (this.y < 5) {
+            this.y = 5;
+            this.y2 = this.y+this.h;
+            this.cY = this.y+this.h/2;
+        }
     }
 
     shoot() {

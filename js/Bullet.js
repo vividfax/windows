@@ -16,21 +16,19 @@ class Bullet {
 
         this.lifeTime++;
 
-        if (this.lifeTime > width+height) {
-        this.destruct();
-        }
+        if (this.x+this.radius > width || this.x-this.radius < 0 || this.y+this.radius > height || this.y-this.radius < 0) this.destruct();
 
         for (let i = 0; i < targets.length; i++) {
-        if (this.collide(targets[i])) {
-            targets[i].radius -= this.radius*0.2;
-            sprays.push(new Spray(this.x, this.y, 1, 10));
-            if (targets[i].radius <= 10) {
-            this.shooter.xp++;
-            sprays.push(new Spray(targets[i].x, targets[i].y, 30, 15));
-            targets[i].destruct();
+            if (this.collide(targets[i])) {
+                targets[i].radius -= this.radius*0.2;
+                sprays.push(new Spray(this.x, this.y, 1, 10));
+                if (targets[i].radius <= 10) {
+                    this.shooter.xp++;
+                    sprays.push(new Spray(targets[i].x, targets[i].y, 30, 15));
+                    targets[i].destruct();
+                }
+                this.destruct();
             }
-            this.destruct();
-        }
         }
 
         this.move();
@@ -51,7 +49,7 @@ class Bullet {
     collide(collider) {
 
         if (dist(this.x, this.y, collider.x, collider.y) < this.radius/2 + collider.radius/2) {
-        return true;
+            return true;
         }
     }
 
@@ -60,10 +58,10 @@ class Bullet {
         let cnvs = wndw.canvas;
 
         if (this.x+this.radius/2 > wndw.x & this.x-this.radius/2 < wndw.x2 && this.y+this.radius/2 > wndw.y && this.y-this.radius/2 < wndw.y2) {
-        cnvs.fill(0);
-        cnvs.noStroke();
-        cnvs.ellipse(this.x-wndw.x, this.y-wndw.y, this.radius);
-        return true;
+            cnvs.fill(0);
+            cnvs.noStroke();
+            cnvs.ellipse(this.x-wndw.x, this.y-wndw.y, this.radius);
+            return true;
         }
     }
 }
