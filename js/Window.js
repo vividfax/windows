@@ -115,7 +115,6 @@ class Window {
     hover() {
 
         if (mouseX > this.x && mouseX < this.x2 && mouseY > this.y && mouseY < this.y2) {
-            console.log('jih')
             return true;
         }
     }

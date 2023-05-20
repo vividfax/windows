@@ -76,7 +76,7 @@ class Powerup {
             if (shooter.health > shooter.maxHealth) shooter.health = shooter.maxHealth;
             return true;
         } else if (this.type == "new") {
-            windows.push(new Window(windows.length));
+            windows.push(new Window(windows.length%targetColours.length));
             return true;
         } else if (this.type == "spam") {
             windows.push(new SpamWindow());

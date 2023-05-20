@@ -8,6 +8,7 @@ class Target {
         this.x = x ? x : random(padding, width-padding);
         this.y = y ? y : random(padding, height-padding);
         this.radius = score > 10 ? random(25, 100) : 50;
+        this.radius += score/5;
         if (score > 30 && bigBadCount < 1 && random() < 0.05) {
             this.radius = random(200, 300);
             bigBadCount++;

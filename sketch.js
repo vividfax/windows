@@ -56,7 +56,7 @@ function setup() {
     }
 
     for (let i = 0; i < 1; i++) {
-        windows.push(new Window(i, "bullet", 180, 180-30, width/2-90, height/2-90-15));
+        windows.push(new Window(i%targetColours.length, "bullet", 180, 180-30, width/2-90, height/2-90-15));
     }
 
     // for (let i = 0; i < 1; i++) {
@@ -99,7 +99,7 @@ function draw() {
         }
     }
 
-    if (allDead) windows.push(new Window(windows.length));
+    if (allDead) windows.push(new Window(windows.length%targetColours.length));
 
     background(150);
     // displayBackground();
