@@ -10,14 +10,13 @@ let newWindowCount = 0;
 let newWindowInterval = 5;
 let score = 0;
 let targetsVisualCount = 0;
-let newRewardCount = 0;
-let newRewardInterval = 1;
 
 let backgroundLayer;
 
 let macFont;
 
 let interacted = false;
+let resetWindowVisible = false;
 
 let powerupImages = {};
 let spamImages = [];
@@ -57,40 +56,7 @@ function setup() {
     noCursor();
     cursorImage = cursorImages.arrow;
 
-    shuffle(targetColours, true);
-
-    for (let i = 0; i < width*height*0.0001; i++) {
-        folders.push(new Folder());
-    }
-
-    for (let i = 0; i < 1; i++) {
-        windows.push(new Window(i%targetColours.length, "bullet", 180, 180-30, width/2-90, height/2-90-15));
-    }
-
-    // for (let i = 0; i < 1; i++) {
-    //     let x = random(width/2-50, width/2+50);
-    //     let y = random(height/2-50, height/2+50);
-    //     let distance = dist(width/2, height/2, x, y);
-    //     while (distance < 50) {
-    //         x = random(width/2-50, width/2+50);
-    //         y = random(height/2-50, height/2+50);
-    //         distance = dist(width/2, height/2, x, y);
-    //     }
-    //     powerups.push(new Powerup(x, y, "faster"));
-    // }
-
-    let padding = 150;
-    for (let i = 0; i < 3; i++) {
-        let x = random(padding, width-padding);
-        let y = random(padding, height-padding);
-        let distance = dist(width/2, height/2, x, y);
-        while (distance < 200) {
-            x = random(padding, width-padding);
-            y = random(padding, height-padding);
-            distance = dist(width/2, height/2, x, y);
-        }
-        targets.push(new Target(x, y));
-    }
+    newGame();
 }
 
 function draw() {
@@ -98,16 +64,22 @@ function draw() {
     if (targetsVisualCount+0.5 < targets.length*height/50) targetsVisualCount += 0.05;
     else if (targetsVisualCount-0.5 > targets.length*height/50) targetsVisualCount -= 0.5;
 
-    let allDead = true;
+    if (!resetWindowVisible) {
 
-    for (let i = 0; i < windows.length; i++) {
-        if (windows[i] instanceof Window && !windows[i].dead) {
-            allDead = false;
-            break;
+        let allDead = true;
+
+        for (let i = 0; i < windows.length; i++) {
+            if (windows[i] instanceof Window && !windows[i].dead) {
+                allDead = false;
+                break;
+            }
+        }
+
+        if (allDead) {
+            resetWindowVisible = true;
+            windows.push(new ResetWindow());
         }
     }
-
-    if (allDead) windows.push(new Window(windows.length%targetColours.length));
 
     background(150);
     // displayBackground();
@@ -169,6 +141,9 @@ function mousePressed() {
             if (windows[i].hoverBar()) {
                 windows[i].moving = true;
                 cursorImage = cursorImages.grab;
+            } else if (windows[i] instanceof ResetWindow && windows[i].       hoverResetButton()) {
+                newGame();
+                return;
             }
             let thisWindow = windows[i];
             windows.splice(i, 1);
@@ -203,4 +178,46 @@ function displayBackground() {
     stroke(0);
     strokeWeight(2);
     line(0, height-targetsVisualCount, width, height-targetsVisualCount);
+}
+
+function newGame() {
+
+    windows = [];
+    folders = [];
+    targets = [];
+    bullets = [];
+    sprays = [];
+    powerups = [];
+
+    targetTimer = 60*5;
+    newWindowCount = 0;
+    newWindowInterval = 5;
+    score = 0;
+    targetsVisualCount = 0;
+
+    interacted = false;
+    resetWindowVisible = false;
+
+    shuffle(targetColours, true);
+
+    for (let i = 0; i < width*height*0.0001; i++) {
+        folders.push(new Folder());
+    }
+
+    for (let i = 0; i < 1; i++) {
+        windows.push(new Window(i%targetColours.length, "bullet", 180, 180-30, width/2-90, (height+30)/2-90-15));
+    }
+
+    let padding = 150;
+    for (let i = 0; i < 3; i++) {
+        let x = random(padding, width-padding);
+        let y = random(padding, height-padding);
+        let distance = dist(width/2, height/2, x, y);
+        while (distance < 200) {
+            x = random(padding, width-padding);
+            y = random(padding, height-padding);
+            distance = dist(width/2, height/2, x, y);
+        }
+        targets.push(new Target(x, y));
+    }
 }
