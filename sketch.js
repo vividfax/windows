@@ -51,7 +51,7 @@ function setup() {
 
     shuffle(targetColours, true);
 
-    for (let i = 0; i < width*height*0.0002; i++) {
+    for (let i = 0; i < width*height*0.0001; i++) {
         folders.push(new Folder());
     }
 

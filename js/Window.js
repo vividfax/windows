@@ -60,6 +60,8 @@ class Window {
         this.health = this.maxHealth;
         this.visualHealth = this.health;
         this.dead = false;
+        this.losingHealth = false;
+        this.healthFlashOffset = random(360);
 
         this.animatePowerup = false;
         this.animatePowerupTimer = -this.w-(this.w+this.h)/4;
@@ -219,16 +221,21 @@ class Window {
 
     hurt() {
 
+        this.losingHealth = false;
+
         if (this.health <= 0) return;
 
         for (let i = 0; i < targets.length; i++) {
             if (this.collide(targets[i])) {
                 this.health -= 0.3;
                 this.visualHealth -= 0.3;
+                this.losingHealth = true;
             }
         }
 
-        if (this.visualHealth+0.3 < this.health) this.visualHealth += 0.3;
+        if (this.visualHealth+0.3 < this.health) {
+            this.visualHealth += 0.3;
+        }
 
         if (this.visualHealth <= 0) this.dead = true;
     }
@@ -358,12 +365,12 @@ class Window {
 
         if (this.dead) percent = this.w;
 
-        this.canvas.fill(0);
-        this.canvas.noStroke();
-        this.canvas.rect(percent, 30-5, this.w, 4);
-        this.canvas.noFill();
         this.canvas.stroke(0);
         this.canvas.strokeWeight(2);
+        this.canvas.fill(0);
+        if (this.losingHealth && (int((frameCount+this.healthFlashOffset)/8))%2 == 1) this.canvas.fill(255);
+        this.canvas.rect(percent, 30-5, this.w-percent, 4);
+        this.canvas.noFill();
         this.canvas.rect(0, 30-5, this.w, 4);
 
         this.canvas.line(65, 9, this.w-65, 9);
