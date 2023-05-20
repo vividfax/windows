@@ -22,7 +22,7 @@ class Window {
         this.w = w ? w : 130+wVsH;
         this.h = h ? h : 130+100-wVsH-30;
         this.x2 = this.x+this.w;
-        this.y2 = this.y+this.h;
+        this.y2 = this.y+this.h+30;
         this.cX = this.x+this.w/2;
         this.cY = this.y+this.h/2;
 
@@ -107,7 +107,7 @@ class Window {
 
         if (!this.inRange && !this.moving) {
             this.y += sin((frameCount+this.bobOffset)*3)*0.2;
-            this.y2 = this.y+this.h;
+            this.y2 = this.y+this.h+30;
             this.cY = this.y+this.h/2;
         }
     }
@@ -115,6 +115,7 @@ class Window {
     hover() {
 
         if (mouseX > this.x && mouseX < this.x2 && mouseY > this.y && mouseY < this.y2) {
+            console.log('jih')
             return true;
         }
     }
@@ -134,7 +135,7 @@ class Window {
         this.x += mouseX - pmouseX;
         this.y += mouseY - pmouseY;
         this.x2 = this.x+this.w;
-        this.y2 = this.y+this.h;
+        this.y2 = this.y+this.h+30;
         this.cX = this.x+this.w/2;
         this.cY = this.y+this.h/2;
     }
@@ -143,7 +144,7 @@ class Window {
 
         if (this.y < 5) {
             this.y = 5;
-            this.y2 = this.y+this.h;
+            this.y2 = this.y+this.h+30;
             this.cY = this.y+this.h/2;
         }
     }
@@ -209,7 +210,7 @@ class Window {
         }
 
         this.x2 = this.x+this.w;
-        this.y2 = this.y+this.h;
+        this.y2 = this.y+this.h+30;
         this.cX = this.x+this.w/2;
         this.cY = this.y+this.h/2;
 
