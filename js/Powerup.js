@@ -17,7 +17,10 @@ class Powerup {
 
     update() {
 
-        if (this.visualRadius < this.radius) this.visualRadius++;
+        if (this.visualRadius < this.radius) {
+            this.visualRadius++;
+            return;
+        }
 
         this.visualRadius += sin((frameCount+this.pulseOffset)*14)*0.3;
 
@@ -88,7 +91,7 @@ class Powerup {
 
     display(wndw) {
 
-        if (this.visualRadius < 0) return;
+        if (this.visualRadius <= 0) return;
 
         let cnvs = wndw.canvas;
 

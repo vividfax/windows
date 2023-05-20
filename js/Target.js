@@ -34,8 +34,10 @@ class Target {
             this.velY = random(-1, 1);
         }
 
-        this.x += this.velX*0.4;
-        this.y += this.velY*0.4;
+        this.speed = 0.4 + score*0.01;
+        if (this.speed > 1) this.speed = 1;
+        this.x += this.velX*this.speed;
+        this.y += this.velY*this.speed;
 
         if (this.x > width) this.x = 0;
         else if (this.x < 0) this.x = width;
