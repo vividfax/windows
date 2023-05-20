@@ -53,7 +53,7 @@ class Target {
         }
 
         newWindowCount++;
-        if (newWindowCount >= newWindowInterval && windows.length < targetColours.length) {
+        if (newWindowCount >= newWindowInterval) {
             newWindowCount = 0;
             newWindowInterval *= 2;
             powerups.push(new Powerup(this.x, this.y, "new"));
