@@ -24,7 +24,7 @@ class Gun {
     upgrade(type) {
 
         if (type == "faster") {
-            if (this.interval <= 0) return false;
+            if (this.interval <= 2) return false;
             this.interval--;
         } else if (type == "more") {
             this.numberOfShots++;

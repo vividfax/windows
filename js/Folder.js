@@ -19,6 +19,10 @@ class Folder {
         this.downloading = false;
         this.downloadProgress = 0;
         this.downloadMax = 100;
+
+        for (let i = -300; i < 0; i++) {
+            this.move(i);
+        }
     }
 
     update() {
@@ -31,18 +35,20 @@ class Folder {
         this.download();
     }
 
-    move() {
+    move(preloadCounter) {
+
+        let count = preloadCounter < 0 ? preloadCounter : frameCount;
 
         if (won) {
             this.x = lerp(this.x, this.originX, 0.05);
             this.y = lerp(this.y, this.originY, 0.05);
         } else {
             if (this.downloadable) {
-                this.x += sin((frameCount+this.xOffset)*0.1)*0.1 * this.xDirection*0.3;
-                this.y -= cos((frameCount+this.yOffset)*0.1)*0.1 * this.yDirection*0.3;
+                this.x += sin((count+this.xOffset)*0.1)*0.1 * this.xDirection*0.3;
+                this.y -= cos((count+this.yOffset)*0.1)*0.1 * this.yDirection*0.3;
             } else {
-                this.x += sin((frameCount+this.xOffset)*0.1)*0.1 * this.xDirection;
-                this.y -= cos((frameCount+this.yOffset)*0.1)*0.1 * this.yDirection;
+                this.x += sin((count+this.xOffset)*0.1)*0.1 * this.xDirection;
+                this.y -= cos((count+this.yOffset)*0.1)*0.1 * this.yDirection;
             }
         }
     }
@@ -54,12 +60,12 @@ class Folder {
         for (let i = 0; i < windows.length; i++) {
             if (windows[i] instanceof Window == false || windows[i].dead) continue;
             if (this.collideWithShooter(windows[i])) {
-                this.downloadProgress += 1;
+                this.downloadProgress += 1.5;
                 downloading = true;
             }
         }
 
-        if (!downloading) this.downloadProgress -= 1;
+        if (!downloading) this.downloadProgress -= 1.5;
 
         if (this.downloadProgress > this.downloadMax) this.downloadProgress = this.downloadMax;
         else if (this.downloadProgress < 0) this.downloadProgress = 0;
@@ -85,11 +91,11 @@ class Folder {
             if (this.downloadable) {
 
                 if (won) this.downloadProgress = this.downloadMax;
-                let percent = this.downloadProgress/this.downloadMax*this.radius*0.9;
-                cnvs.rect(this.x-wndw.x, this.y-wndw.y+this.radius*0.1, this.radius*0.9, this.radius*0.05);
+                let percent = this.downloadProgress/this.downloadMax*this.radius*0.7;
+                cnvs.rect(this.x-wndw.x, this.y-wndw.y+this.radius*0.1, this.radius*0.7, this.radius*0.05);
                 cnvs.fill(0);
                 cnvs.rectMode(CORNER);
-                cnvs.rect(this.x-wndw.x-this.radius*0.45, this.y-wndw.y+this.radius*0.075, percent, this.radius*0.05);
+                cnvs.rect(this.x-wndw.x-this.radius*0.35, this.y-wndw.y+this.radius*0.075, percent, this.radius*0.05);
                 cnvs.noStroke();
                 cnvs.textAlign(CENTER);
                 cnvs.textSize(this.radius*0.2);
