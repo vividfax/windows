@@ -25,6 +25,8 @@ class SpamWindow {
 
     update() {
 
+        if (won) this.destruct();
+
         this.move();
     }
 
@@ -53,6 +55,12 @@ class SpamWindow {
         this.y2 = this.y+this.h;
         this.cX = this.x+this.w/2;
         this.cY = this.y+this.h/2;
+    }
+
+    destruct() {
+
+        let index = windows.indexOf(this);
+        if (index != -1) windows.splice(index, 1);
     }
 
     display() {

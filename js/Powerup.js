@@ -58,19 +58,6 @@ class Powerup {
 
     bestowPower(shooter) {
 
-        // for (let i = 0; i < shooter.guns.length; i++) {
-        //     if (shooter.guns[i].type == this.type) {
-        //         shooter.guns[i].upgrade();
-        //         return;
-        //     }
-        // }
-
-        // if (this.type == "expand") {
-        //     shooter.levelGrowth += 30;
-        // } else {
-        //     shooter.guns.push(new Gun(this.type));
-        // }
-
         if (this.type == "expand") {
             shooter.levelGrowth += 30;
             shooter.health += 10;
