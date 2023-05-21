@@ -369,8 +369,8 @@ class Window {
 
         this.canvas.stroke(0);
         this.canvas.strokeWeight(2);
-        this.canvas.fill(0);
-        if (this.losingHealth && (int((frameCount+this.healthFlashOffset)/8))%2 == 1) this.canvas.fill(this.targetColour);
+        this.canvas.fill(this.targetColour);
+        if (this.losingHealth && (int((frameCount+this.healthFlashOffset)/8))%2 == 1) this.canvas.fill(0);
         if (this.dead) this.canvas.fill(this.targetColour);
         this.canvas.rect(percent, 30-5, this.w-percent, 4);
         this.canvas.noFill();

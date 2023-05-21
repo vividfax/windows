@@ -15,12 +15,20 @@ class ResetWindow {
         this.canvas.textFont(macFont);
 
         this.moving = false;
-        this.rendered = false;
+        this.bobOffset = random(360);
+
+        this.fromColour = 255;
+        this.toColour = random(targetColours);
+        this.lerpStep = -0.5;
     }
 
     update() {
 
         this.move();
+
+        this.y += sin((frameCount+this.bobOffset)*3)*0.2;
+        this.y2 = this.y+this.h+30;
+        this.cY = this.y+this.h/2+30;
     }
 
     hover() {
@@ -59,11 +67,21 @@ class ResetWindow {
 
     display() {
 
-        if (this.rendered) return;
-        if (!this.rendered) this.rendered;
+        let colour = 255;
+
+        if (won) {
+            this.lerpStep += 0.01;
+            colour = lerpColor(color(this.fromColour), color(this.toColour), this.lerpStep);
+            if (this.lerpStep >= 1) {
+                this.fromColour = this.toColour;
+                this.toColour = random(targetColours);
+                while (this.fromColour == this.toColour) this.toColour = random(targetColours);
+                this.lerpStep = 0;
+            }
+        }
 
         this.canvas.push();
-        this.canvas.background(255);
+        this.canvas.background(colour);
         this.canvas.stroke(0);
         this.canvas.strokeWeight(2);
         this.canvas.translate(0, 30);
@@ -77,7 +95,8 @@ class ResetWindow {
         this.canvas.fill(0);
         if (this.hoverResetButton()) this.canvas.fill(255);
         this.canvas.textAlign(CENTER);
-        this.canvas.text("REBOOT", this.w/2, this.h/2+4);
+        let string = won ? "NEW GAME" : "REBOOT";
+        this.canvas.text(string, this.w/2, this.h/2+4);
 
         this.canvas.translate(0, -30);
         this.canvas.stroke(0);

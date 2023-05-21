@@ -23,6 +23,8 @@ let spamImages = [];
 let cursorImages = {};
 let cursorImage;
 
+let won = false;
+
 function preload() {
 
     macFont = loadFont("./fonts/VT323-Regular.ttf");
@@ -82,7 +84,7 @@ function draw() {
     }
 
     background(150);
-    // displayBackground();
+    displayBackground();
 
     for (let i = 0; i < folders.length; i++) {
         folders[i].update();
@@ -115,7 +117,7 @@ function draw() {
         windows[i].display();
     }
 
-    if (frameCount%targetTimer == 0 && interacted) {
+    if (frameCount%targetTimer == 0 && interacted && !won) {
         targets.push(new Target());
         if (targetTimer > 60*1) targetTimer -= 3;
     }
@@ -168,19 +170,32 @@ function displayBackground() {
     strokeWeight(2);
 
     for (let i = 0; i < width+height; i += 8) {
-
         line(i, 0, 0, i);
     }
 
+    let percent = 0;
+
+    for (let i = folders.length-3*2; i < folders.length; i++) {
+        percent += folders[i].downloadProgress/folders[i].downloadMax/(3*2);
+    }
+
+    if (!won && percent > 0.99) {
+        won = true;
+        windows.push(new ResetWindow());
+    }
+    if (won) percent = 1;
+
     fill(150);
     noStroke();
-    rect(0, 0, width, height-targetsVisualCount);
+    rect(percent*width, 0, width-percent, height);
     stroke(0);
     strokeWeight(2);
-    line(0, height-targetsVisualCount, width, height-targetsVisualCount);
+    line(percent*width, 0, percent*width, height);
 }
 
 function newGame() {
+
+    won = false;
 
     windows = [];
     folders = [];
@@ -201,15 +216,26 @@ function newGame() {
     shuffle(targetColours, true);
 
     for (let i = 0; i < width*height*0.0001; i++) {
-        folders.push(new Folder());
+        folders.push(new Folder(false));
+    }
+
+    let padding = 100;
+    let w = width-padding*2;
+    let h = height-padding*2;
+    for (let i = 0; i < 3; i++) {
+        for (let j = 0; j < 2; j++) {
+            let x = w/3*i+w/8+padding+random(-20, 20)+padding;
+            let y = h/2*j+h/6+padding+random(-20, 20)+50;
+            folders.push(new Folder(true, x, y));
+        }
     }
 
     for (let i = 0; i < 1; i++) {
         windows.push(new Window(i%targetColours.length, "bullet", 180, 180-30, width/2-90, (height+30)/2-90-15));
     }
 
-    let padding = 150;
-    for (let i = 0; i < 3; i++) {
+    padding = 150;
+    for (let i = 0; i < 10; i++) {
         let x = random(padding, width-padding);
         let y = random(padding, height-padding);
         let distance = dist(width/2, height/2, x, y);

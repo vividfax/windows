@@ -27,6 +27,8 @@ class Target {
 
     update() {
 
+        if (won) this.destruct(true);
+
         if (this.visualRadius < this.radius) this.visualRadius++;
         else if (this.visualRadius > this.radius) this.visualRadius--;
 
@@ -46,24 +48,28 @@ class Target {
         else if (this.y < 50 && this.velY < 0) this.velY *= -1;
     }
 
-    destruct() {
+    destruct(forced) {
 
-        if (this.bigBad) {
-            bigBadCount--;
+        if (!forced) {
+            if (this.bigBad) {
+                bigBadCount--;
+            }
+
+            newWindowCount++;
+            if (newWindowCount >= newWindowInterval) {
+                newWindowCount = 0;
+                newWindowInterval *= 1.7;
+                powerups.push(new Powerup(this.x, this.y, "new"));
+            } else if (score % 12 == 11) {
+                powerups.push(new Powerup(this.x, this.y, "spam"));
+            } else {
+                powerups.push(new Powerup(this.x, this.y));
+            }
+
+            score++;
         }
 
-        newWindowCount++;
-        if (newWindowCount >= newWindowInterval) {
-            newWindowCount = 0;
-            newWindowInterval *= 2;
-            powerups.push(new Powerup(this.x, this.y, "new"));
-        } else if (score % 12 == 11) {
-            powerups.push(new Powerup(this.x, this.y, "spam"));
-        } else {
-            powerups.push(new Powerup(this.x, this.y));
-        }
-
-        score++;
+        sprays.push(new Spray(this.x, this.y, 30, 15));
 
         let index = targets.indexOf(this);
         if (index != -1) targets.splice(index, 1);

@@ -25,7 +25,6 @@ class Bullet {
                 sprays.push(new Spray(this.x, this.y, 1, 10));
                 if (targets[i].radius <= 10) {
                     this.shooter.xp++;
-                    sprays.push(new Spray(targets[i].x, targets[i].y, 30, 15));
                     targets[i].destruct();
                 }
                 this.destruct();

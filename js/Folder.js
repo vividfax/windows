@@ -1,23 +1,59 @@
 class Folder {
 
-    constructor() {
+    constructor(downloadable, x, y) {
 
-        this.x = random(width);
-        this.y = random(height);
-        this.radius = random(50, 100);
+        let padding = 100;
+        this.x = x ? x : random(padding, width-padding);
+        this.y = y ? y : random(padding, height-padding);
+        this.radius = downloadable ? 100 : random(50, 100);
 
         this.xOffset = random(360);
         this.yOffset = random(360);
         this.radiusOffset = random(360);
         this.xDirection = random([-1, 1]);
         this.yDirection = random([-1, 1]);
+
+        this.downloadable = downloadable;
+        this.downloading = false;
+        this.downloadProgress = 0;
+        this.downloadMax = 100;
     }
 
     update() {
 
-        this.x += sin((frameCount+this.xOffset)*0.1)*0.1 * this.xDirection;
-        this.y -= cos((frameCount+this.yOffset)*0.1)*0.1 * this.yDirection;
+        if (this.downloadable) {
+            this.x += sin((frameCount+this.xOffset)*0.1)*0.1 * this.xDirection*0.3;
+            this.y -= cos((frameCount+this.yOffset)*0.1)*0.1 * this.yDirection*0.3;
+        } else {
+            this.x += sin((frameCount+this.xOffset)*0.1)*0.1 * this.xDirection;
+            this.y -= cos((frameCount+this.yOffset)*0.1)*0.1 * this.yDirection;
+        }
         this.radius += sin((frameCount+this.radiusOffset)*4)*0.1;
+
+        this.download();
+    }
+
+    download() {
+
+        let downloading = false;
+
+        for (let i = 0; i < windows.length; i++) {
+            if (windows[i] instanceof Window == false || windows[i].dead) continue;
+            if (this.collideWithShooter(windows[i])) {
+                this.downloadProgress += 1;
+                downloading = true;
+            }
+        }
+
+        if (!downloading) this.downloadProgress -= 1;
+
+        if (this.downloadProgress > this.downloadMax) this.downloadProgress = this.downloadMax;
+        else if (this.downloadProgress < 0) this.downloadProgress = 0;
+    }
+
+    collideWithShooter(collider) {
+
+        if (dist(this.x, this.y, collider.cX, collider.cY) < this.radius*0.7/2 + 30/2) return true;
     }
 
     display(wndw) {
@@ -25,15 +61,32 @@ class Folder {
         let cnvs = wndw.canvas;
 
         if (this.x+this.radius/2 > wndw.x & this.x-this.radius/2 < wndw.x2 && this.y+this.radius/2 > wndw.y && this.y-this.radius/2 < wndw.y2) {
-        cnvs.fill(255);
-        cnvs.stroke(0);
-        cnvs.strokeWeight(2);
-        cnvs.rectMode(CENTER);
-        cnvs.rect(this.x-wndw.x-this.radius/5, this.y-wndw.y-this.radius/5, this.radius/5*2, this.radius/5*2, this.radius*0.05);
-        cnvs.rect(this.x-wndw.x, this.y-wndw.y, this.radius, this.radius*0.65, this.radius*0.05, this.radius*0.05, 0, 0);
-        cnvs.rectMode(CORNER);
-        return true;
-        } else {
+            cnvs.fill(255);
+            cnvs.stroke(0);
+            cnvs.strokeWeight(2);
+            cnvs.rectMode(CENTER);
+            cnvs.rect(this.x-wndw.x-this.radius/5, this.y-wndw.y-this.radius/5, this.radius/5*2, this.radius/5*2, this.radius*0.05);
+            cnvs.rect(this.x-wndw.x, this.y-wndw.y, this.radius, this.radius*0.65, this.radius*0.05, this.radius*0.05, 0, 0);
+
+            if (this.downloadable) {
+
+                if (won) this.downloadProgress = this.downloadMax;
+                let percent = this.downloadProgress/this.downloadMax*this.radius*0.9;
+                cnvs.rect(this.x-wndw.x, this.y-wndw.y+this.radius*0.1, this.radius*0.9, this.radius*0.05);
+                cnvs.fill(0);
+                cnvs.rectMode(CORNER);
+                cnvs.rect(this.x-wndw.x-this.radius*0.45, this.y-wndw.y+this.radius*0.075, percent, this.radius*0.05);
+                cnvs.noStroke();
+                cnvs.textAlign(CENTER);
+                cnvs.textSize(this.radius*0.2);
+                let string = this.downloadProgress == this.downloadMax ? "WAITING" : "DOWNLOADING";
+                if (won) string = "COMPLETE";
+                cnvs.text(string, this.x-wndw.x, this.y-wndw.y-this.radius*0.01);
+            }
+
+            cnvs.rectMode(CORNER);
+
+            return true;
         }
     }
 }

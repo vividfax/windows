@@ -17,6 +17,13 @@ class Powerup {
 
     update() {
 
+        if (won && this.visualRadius > 0) {
+            this.visualRadius -= 3;
+            return;
+        } else if (won && this.visualRadius <= 0) {
+            this.destruct();
+        }
+
         if (this.visualRadius < this.radius) {
             this.visualRadius++;
             return;
