@@ -263,7 +263,7 @@ class Window {
     collidingWithTarget() {
 
         for (let i = 0; i < targets.length; i++) {
-            if (dist(this.x, this.y, targets[i].x, targets[i].y) < 30/2 + targets[i].radius/2 + 20) {
+            if (dist(this.cX, this.cY, targets[i].x, targets[i].y) < 30/2 + targets[i].radius/2 + 20) {
                 return true;
             }
         }
