@@ -5,6 +5,8 @@ class Folder {
         let padding = 100;
         this.x = x ? x : random(padding, width-padding);
         this.y = y ? y : random(padding, height-padding);
+        this.originX = this.x;
+        this.originY = this.y;
         this.radius = downloadable ? 100 : random(50, 100);
 
         this.xOffset = random(360);
@@ -21,16 +23,28 @@ class Folder {
 
     update() {
 
-        if (this.downloadable) {
-            this.x += sin((frameCount+this.xOffset)*0.1)*0.1 * this.xDirection*0.3;
-            this.y -= cos((frameCount+this.yOffset)*0.1)*0.1 * this.yDirection*0.3;
-        } else {
-            this.x += sin((frameCount+this.xOffset)*0.1)*0.1 * this.xDirection;
-            this.y -= cos((frameCount+this.yOffset)*0.1)*0.1 * this.yDirection;
-        }
+        this.move();
+
+        if (won) this.radius = lerp(this.radius, 90, 0.05);
         this.radius += sin((frameCount+this.radiusOffset)*4)*0.1;
 
         this.download();
+    }
+
+    move() {
+
+        if (won) {
+            this.x = lerp(this.x, this.originX, 0.05);
+            this.y = lerp(this.y, this.originY, 0.05);
+        } else {
+            if (this.downloadable) {
+                this.x += sin((frameCount+this.xOffset)*0.1)*0.1 * this.xDirection*0.3;
+                this.y -= cos((frameCount+this.yOffset)*0.1)*0.1 * this.yDirection*0.3;
+            } else {
+                this.x += sin((frameCount+this.xOffset)*0.1)*0.1 * this.xDirection;
+                this.y -= cos((frameCount+this.yOffset)*0.1)*0.1 * this.yDirection;
+            }
+        }
     }
 
     download() {

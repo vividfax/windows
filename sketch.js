@@ -215,19 +215,26 @@ function newGame() {
 
     shuffle(targetColours, true);
 
-    for (let i = 0; i < width*height*0.0001; i++) {
-        folders.push(new Folder(false));
-    }
-
+    let cols = 3*3;
+    let rows = 2*3;
     let padding = 100;
     let w = width-padding*2;
     let h = height-padding*2;
-    for (let i = 0; i < 3; i++) {
-        for (let j = 0; j < 2; j++) {
-            let x = w/3*i+w/8+padding+random(-20, 20)+padding;
-            let y = h/2*j+h/6+padding+random(-20, 20)+50;
-            folders.push(new Folder(true, x, y));
+    let xSpacing = w/cols;
+    let ySpacing = h/rows;
+
+    let x = 0;
+    let y = 0;
+
+    for (let i = padding+xSpacing/2; i <= width-padding; i += xSpacing) {
+        for (let j = padding+ySpacing/2; j <= height-padding; j += ySpacing) {
+
+            if (x%3 == 1 && y%3 == 1) folders.push(new Folder(true, i, j));
+            else folders.unshift(new Folder(false, i, j));
+            x++;
         }
+        y++;
+        x = 0;
     }
 
     for (let i = 0; i < 1; i++) {
