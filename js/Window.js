@@ -10,21 +10,25 @@ class Window {
     constructor(index, shooterType, w, h, x, y) {
 
         let padding = 150;
-        this.x = x ? x : random(padding, width-padding);
-        this.y = y ? y : random(padding, height-padding);
-
-        while (this.collidingWithTarget()) {
-            this.x = x ? x : random(padding, width-padding);
-            this.y = y ? y : random(padding, height-padding);
-        }
-
         let wVsH = int(random(100));
         this.w = w ? w : 130+wVsH;
         this.h = h ? h : 130+100-wVsH-30;
+        this.x = x ? x : random(padding, width-padding);
+        this.y = y ? y : random(padding, height-padding);
         this.x2 = this.x+this.w;
         this.y2 = this.y+this.h+30;
         this.cX = this.x+this.w/2;
         this.cY = this.y+this.h/2;
+
+        while (this.collidingWithTarget()) {
+            this.x = x ? x : random(padding, width-padding);
+            this.y = y ? y : random(padding, height-padding);
+            this.x2 = this.x+this.w;
+            this.y2 = this.y+this.h+30;
+            this.cX = this.x+this.w/2;
+            this.cY = this.y+this.h/2;
+        }
+
 
         this.canvas = createGraphics(this.w, this.h+30);
         this.canvas.textFont(macFont);
