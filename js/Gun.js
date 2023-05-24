@@ -63,7 +63,7 @@ class Gun {
             }
         }
 
-        if (bestAssetLevel < 5) return "NORMAL";
+        if (bestAssetLevel < 4) return "NORMAL";
         else if (assets[0] == 20 && assets[1] == 20 && assets[2] == 20) return "GODLY";
 
         return bestAsset;
