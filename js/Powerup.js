@@ -44,7 +44,7 @@ class Powerup {
                     }
                 }
                 break;
-            } else if (this.drawnToShooter(windows[i])) {
+            } else if (this.onScreen(windows[i])) {
                 let vec = createVector(windows[i].cX-this.x, windows[i].cY-this.y);
                 let gravity = (windows[i].x+windows[i].y)*0.001*0.25;
                 vec.normalize().mult(gravity);
@@ -68,6 +68,13 @@ class Powerup {
     overlapWithShooter(collider) {
 
         if (dist(this.x, this.y, collider.cX, collider.cY) < 2) return true;
+    }
+
+    onScreen(wndw) {
+
+        if (this.x+this.radius/2 > wndw.x & this.x-this.radius/2 < wndw.x2 && this.y+this.radius/2 > wndw.y && this.y-this.radius/2 < wndw.y2) {
+            return true;
+        }
     }
 
     bestowPower(shooter) {

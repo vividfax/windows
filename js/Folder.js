@@ -49,8 +49,10 @@ class Folder {
             this.y = lerp(this.y, this.originY, 0.05);
         } else {
             if (this.downloadable) {
-                this.x += sin((count+this.xOffset)*0.1)*0.1 * this.xDirection*0.3;
-                this.y -= cos((count+this.yOffset)*0.1)*0.1 * this.yDirection*0.3;
+                if (count < 0) {
+                    this.x += sin((count+this.xOffset)*0.1)*0.1 * this.xDirection*0.3;
+                    this.y -= cos((count+this.yOffset)*0.1)*0.1 * this.yDirection*0.3;
+                }
             } else {
                 this.x += sin((count+this.xOffset)*0.1)*0.1 * this.xDirection;
                 this.y -= cos((count+this.yOffset)*0.1)*0.1 * this.yDirection;
