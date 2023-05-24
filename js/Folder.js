@@ -20,6 +20,8 @@ class Folder {
         this.downloadProgress = 0;
         this.downloadMax = 100;
 
+        this.strokeColour = 202;
+
         for (let i = -300; i < 0; i++) {
             this.move(i);
         }
@@ -29,7 +31,10 @@ class Folder {
 
         this.move();
 
-        if (won) this.radius = lerp(this.radius, 90, 0.05);
+        if (won) {
+            this.radius = lerp(this.radius, 90, 0.05);
+            this.strokeColour = lerp(this.strokeColour, 0, 0.05);
+        }
         this.radius += sin((frameCount+this.radiusOffset)*4)*0.1;
 
         this.download();
@@ -82,7 +87,7 @@ class Folder {
 
         if (this.x+this.radius/2 > wndw.x & this.x-this.radius/2 < wndw.x2 && this.y+this.radius/2 > wndw.y && this.y-this.radius/2 < wndw.y2) {
             cnvs.fill(255);
-            cnvs.stroke(202);
+            cnvs.stroke(this.strokeColour);
             if (this.downloadable) cnvs.stroke(0);
             cnvs.strokeWeight(2);
             cnvs.rectMode(CENTER);
