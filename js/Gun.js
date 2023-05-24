@@ -54,7 +54,7 @@ class Gun {
         let bestAssetLevel = -1;
 
         let assets = [this.fasterLevel, this.moreLevel, this.biggerLevel];
-        let assetName = ["FAST", "MANY", "STRONG"];
+        let assetName = ["QUICK", "MANY", "STRONG"];
 
         for (let i = 0; i < assets.length; i++) {
             if (assets[i] > bestAssetLevel) {
