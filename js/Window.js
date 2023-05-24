@@ -4,6 +4,7 @@ let shooterTypes = ["bullet"];
 let consonants = "BCDFGHKLMNPRSTW";
 let vowels = "AEIOU";
 let ignoreNames = ["FUK", "FUC", "CUC", "CUK", "KUK", "KUC", "KIL", "CUM", "KUM", "FAP", "CIS", "NOB", "KEK", "CUN"];
+let namesUsed = [];
 
 class Window {
 
@@ -29,9 +30,9 @@ class Window {
             this.cY = this.y+this.h/2;
         }
 
-
         this.canvas = createGraphics(this.w, this.h+30);
         this.canvas.textFont(macFont);
+        this.canvas.angleMode(DEGREES);
 
         this.moving = false;
         this.bulletTimer = 0;
@@ -53,12 +54,12 @@ class Window {
         this.xOffset = 0;
         this.yOffset = 0;
 
-        this.name = this.generateName();
-        while (ignoreNames.includes(this.name)) this.name = this.generateName();
-
-        this.guns = [];
-
         this.gun = new Gun("singleBullet");
+
+        // this.name = this.generateName();
+        // while (ignoreNames.includes(this.name) || namesUsed.includes(this.name)) this.name = this.generateName();
+        // namesUsed.push(this.name);
+        this.name = this.gun.getBestAsset();
 
         this.maxHealth = 100;
         this.health = this.maxHealth;
@@ -259,6 +260,11 @@ class Window {
         return chars.join('');
     }
 
+    rename() {
+
+        this.name = this.gun.getBestAsset();
+    }
+
     collide(collider) {
 
         if (dist(this.cX, this.cY, collider.x, collider.y) < 30/2 + collider.radius/2) return true;
@@ -397,5 +403,12 @@ class Window {
         // for (let i = 0; i < this.guns.length; i++) {
         //     this.canvas.image(powerupImages[this.guns[i].type], this.w-13*(i+1), 13, 15, 15);
         // }
+
+        let images = [statusImages.bigger, statusImages.more, statusImages.faster];
+        let percents = [this.gun.biggerLevel, this.gun.moreLevel, this.gun.fasterLevel];
+
+        for (let i = 0; i < images.length; i++) {
+            this.canvas.image(images[i][percents[i]], this.w-13-18*i, 13, 15, 15);
+        }
     }
 }

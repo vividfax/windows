@@ -32,18 +32,32 @@ class Powerup {
         this.visualRadius += sin((frameCount+this.pulseOffset)*14)*0.3;
 
         for (let i = 0; i < windows.length; i++) {
-            if (windows[i] instanceof Window && this.collideWithShooter(windows[i])) {
-                this.x = lerp(this.x, windows[i].cX, 0.15);
-                this.y = lerp(this.y, windows[i].cY, 0.15);
-            }
-            if (windows[i] instanceof Window && this.overlapWithShooter(windows[i])) {
+            if (windows[i] instanceof Window == false && windows[i] == dead) continue;
+            if (this.collideWithShooter(windows[i])) {
+                this.x = lerp(this.x, windows[i].cX, 0.25);
+                this.y = lerp(this.y, windows[i].cY, 0.25);
+                if (this.overlapWithShooter(windows[i])) {
 
-                if (this.bestowPower(windows[i])) {
-                    this.destruct();
-                    if (this.type != "expand" && this.type != "health" && this.type != "new" && this.type != "spam") windows[i].animatePowerup = true;
+                    if (this.bestowPower(windows[i])) {
+                        if (this.type != "expand" && this.type != "health" && this.type != "new" && this.type != "spam") windows[i].animatePowerup = true;
+                        this.destruct();
+                    }
                 }
+                break;
+            } else if (this.drawnToShooter(windows[i])) {
+                let vec = createVector(windows[i].cX-this.x, windows[i].cY-this.y);
+                let gravity = (windows[i].x+windows[i].y)*0.001*0.25;
+                vec.normalize().mult(gravity);
+                this.x += vec.x;
+                this.y += vec.y;
             }
         }
+    }
+
+    drawnToShooter(collider) {
+
+        let colliderRadius = (collider.w+collider.h)/2;
+        if (dist(this.x, this.y, collider.cX, collider.cY) < colliderRadius/2 + 30/2) return true;
     }
 
     collideWithShooter(collider) {
@@ -76,7 +90,9 @@ class Powerup {
             windows.push(new SpamWindow());
             return true;
         } else {
-            return shooter.gun.upgrade(this.type);
+            let upgraded = shooter.gun.upgrade(this.type)
+            shooter.rename();
+            return upgraded;
         }
     }
 

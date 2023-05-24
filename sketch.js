@@ -19,11 +19,18 @@ let interacted = false;
 let resetWindowVisible = false;
 
 let powerupImages = {};
+let statusImages = {
+    more: [],
+    faster: [],
+    bigger: [],
+};
 let spamImages = [];
 let cursorImages = {};
 let cursorImage;
 
 let won = false;
+
+let holdingWindow = false;
 
 function preload() {
 
@@ -36,6 +43,14 @@ function preload() {
     powerupImages.health = loadImage("./images/powerups/health.png");
     powerupImages.new = loadImage("./images/powerups/new.png");
     powerupImages.spam = loadImage("./images/powerups/spam.png");
+
+    for (let i = 0; i < 21; i++) {
+        let percent = i*5;
+        statusImages.more.push(loadImage("./images/status/more"+percent+".png"));
+        statusImages.faster.push(loadImage("./images/status/faster"+percent+".png"));
+        statusImages.bigger.push(loadImage("./images/status/bigger"+percent+".png"));
+
+    }
 
     for (let i = 0; i < 10; i++) {
         spamImages.push(loadImage("./images/spam/"+i+".png"));
@@ -102,20 +117,28 @@ function draw() {
         sprays[i].update();
     }
 
-    if (!mouseIsPressed) cursorImage = cursorImages.arrow;
+    if (!holdingWindow) cursorImage = cursorImages.arrow;
 
     for (let i = 0; i < windows.length; i++) {
         windows[i].update();
-        if (!mouseIsPressed && windows[i].hoverBar()) cursorImage = cursorImages.point;
+        if (windows[i].hoverBar() && !holdingWindow) cursorImage = cursorImages.point;
+    }
+
+    if (mouseX < 0 || mouseX > width || mouseY < 0 || mouseY > height) {
+        holdingWindow = false;
+        cursorImage = cursorImages.point;
     }
 
     for (let i = 0; i < powerups.length; i++) {
         powerups[i].update();
     }
 
+    let displayLater = -1;
     for (let i = 0; i < windows.length; i++) {
-        windows[i].display();
+        if (!windows[i].moving) windows[i].display();
+        else displayLater = windows[i];
     }
+    if (displayLater != -1) displayLater.display();
 
     if (frameCount%targetTimer == 0 && interacted && !won) {
         targets.push(new Target());
@@ -136,6 +159,22 @@ function draw() {
 
 function mousePressed() {
 
+    if (holdingWindow) {
+
+        for (let i = 0; i < windows.length; i++) {
+            if (windows[i].moving) {
+                let thisWindow = windows[i];
+                windows.splice(i, 1);
+                windows.push(thisWindow);
+                windows[i].moving = false;
+            }
+        }
+
+        cursorImage = cursorImages.arrow;
+        holdingWindow = false;
+        return;
+    }
+
     for (let i = windows.length-1; i >= 0; i--) {
 
         if (!interacted) interacted = true;
@@ -143,6 +182,7 @@ function mousePressed() {
             if (windows[i].hoverBar()) {
                 windows[i].moving = true;
                 cursorImage = cursorImages.grab;
+                holdingWindow = true;
             } else if (windows[i] instanceof ResetWindow && windows[i].       hoverResetButton()) {
                 newGame();
                 return;
@@ -155,14 +195,14 @@ function mousePressed() {
     }
 }
 
-function mouseReleased() {
+// function mouseReleased() {
 
-    for (let i = 0; i < windows.length; i++) {
-        windows[i].moving = false;
-    }
+//     for (let i = 0; i < windows.length; i++) {
+//         windows[i].moving = false;
+//     }
 
-    cursorImage = cursorImages.arrow;
-}
+//     cursorImage = cursorImages.arrow;
+// }
 
 function displayBackground() {
 

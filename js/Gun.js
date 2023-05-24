@@ -7,6 +7,10 @@ class Gun {
         this.interval = 20;
         this.numberOfShots = 1;
         this.shotSize = 10;
+
+        this.fasterLevel = 0;
+        this.moreLevel = 0;
+        this.biggerLevel = 0;
     }
 
     update(inRange) {
@@ -24,16 +28,44 @@ class Gun {
     upgrade(type) {
 
         if (type == "faster") {
-            if (this.interval <= 2) return false;
+            if (this.fasterLevel >= 20) return false;
+            // if (this.interval <= 2) return false;
             this.interval--;
+            this.fasterLevel++;
         } else if (type == "more") {
+            if (this.moreLevel >= 20) return false;
+            // if (this.numberOfShots >= 20) return false;
             this.numberOfShots++;
+            this.moreLevel++;
         } else if (type == "bigger") {
-            if (this.shotSize > 20) return false;
+            if (this.biggerLevel >= 20) return false;
+            // if (this.shotSize >= 20) return false;
             this.shotSize += 0.5;
             this.interval++;
+            this.biggerLevel++;
         }
 
         return true;
+    }
+
+    getBestAsset() {
+
+        let bestAsset = -1;
+        let bestAssetLevel = -1;
+
+        let assets = [this.fasterLevel, this.moreLevel, this.biggerLevel];
+        let assetName = ["FAST", "MANY", "STRONG"];
+
+        for (let i = 0; i < assets.length; i++) {
+            if (assets[i] > bestAssetLevel) {
+                bestAsset = assetName[i];
+                bestAssetLevel = assets[i];
+            }
+        }
+
+        if (bestAssetLevel < 5) return "NORMAL";
+        else if (assets[0] == 20 && assets[1] == 20 && assets[2] == 20) return "GODLY";
+
+        return bestAsset;
     }
 }

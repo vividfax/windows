@@ -82,7 +82,8 @@ class Folder {
 
         if (this.x+this.radius/2 > wndw.x & this.x-this.radius/2 < wndw.x2 && this.y+this.radius/2 > wndw.y && this.y-this.radius/2 < wndw.y2) {
             cnvs.fill(255);
-            cnvs.stroke(0);
+            cnvs.stroke(202);
+            if (this.downloadable) cnvs.stroke(0);
             cnvs.strokeWeight(2);
             cnvs.rectMode(CENTER);
             cnvs.rect(this.x-wndw.x-this.radius/5, this.y-wndw.y-this.radius/5, this.radius/5*2, this.radius/5*2, this.radius*0.05);

@@ -60,8 +60,8 @@ class Target {
                 newWindowCount = 0;
                 newWindowInterval *= 1.7;
                 powerups.push(new Powerup(this.x, this.y, "new"));
-            } else if (score % 12 == 11) {
-                powerups.push(new Powerup(this.x, this.y, "spam"));
+            // } else if (score % 12 == 11) {
+            //     powerups.push(new Powerup(this.x, this.y, "spam"));
             } else {
                 powerups.push(new Powerup(this.x, this.y));
             }
@@ -69,7 +69,7 @@ class Target {
             score++;
         }
 
-        sprays.push(new Spray(this.x, this.y, 30, 15));
+        sprays.push(new Spray(this.x, this.y, 15, 15));
 
         let index = targets.indexOf(this);
         if (index != -1) targets.splice(index, 1);
