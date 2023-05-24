@@ -207,7 +207,7 @@ class Window {
 
         if (this.levelGrowth <= 0) return;
 
-        if (random() < 0.5) {
+        if (random() < 0.5 || this.h > height-30) {
             this.w++;
         } else {
             this.h++;

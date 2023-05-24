@@ -22,7 +22,7 @@ class Bullet {
         for (let i = 0; i < targets.length; i++) {
             if (this.collide(targets[i])) {
                 targets[i].radius -= this.radius*0.2;
-                sprays.push(new Spray(this.x, this.y, 1, 10));
+                sprays.push(new Spray(this.x, this.y, 1, 5));
                 if (targets[i].radius <= 10) {
                     this.shooter.xp++;
                     targets[i].destruct();

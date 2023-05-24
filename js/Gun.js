@@ -7,6 +7,7 @@ class Gun {
         this.interval = 20;
         this.numberOfShots = 1;
         this.shotSize = 10;
+        this.damage = 5;
 
         this.fasterLevel = 0;
         this.moreLevel = 0;
@@ -30,7 +31,7 @@ class Gun {
         if (type == "faster") {
             if (this.fasterLevel >= 20) return false;
             // if (this.interval <= 2) return false;
-            this.interval--;
+            this.interval -= 0.5;
             this.fasterLevel++;
         } else if (type == "more") {
             if (this.moreLevel >= 20) return false;
@@ -41,7 +42,8 @@ class Gun {
             if (this.biggerLevel >= 20) return false;
             // if (this.shotSize >= 20) return false;
             this.shotSize += 0.5;
-            this.interval++;
+            this.damage += 0.2;
+            // this.interval++;
             this.biggerLevel++;
         }
 

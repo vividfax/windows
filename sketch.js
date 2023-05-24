@@ -145,16 +145,16 @@ function draw() {
         if (targetTimer > 60*1) targetTimer -= 3;
     }
 
+    imageMode(CENTER);
+    image(cursorImage, mouseX, mouseY, 50, 50);
+    imageMode(CORNER);
+
     strokeWeight(6);
     noFill();
     stroke("#A5A292");
     rect(-3, -3, width+6, height+6, 16);
     stroke(0);
     rect(3, 3, width-6, height-6, 10);
-
-    imageMode(CENTER);
-    image(cursorImage, mouseX, mouseY, 50, 50);
-    imageMode(CORNER);
 }
 
 function mousePressed() {
