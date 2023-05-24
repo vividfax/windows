@@ -32,7 +32,7 @@ class Powerup {
         this.visualRadius += sin((frameCount+this.pulseOffset)*14)*0.3;
 
         for (let i = 0; i < windows.length; i++) {
-            if (windows[i] instanceof Window == false && windows[i] == dead) continue;
+            if (windows[i] instanceof Window == false || windows[i].dead) continue;
             if (this.collideWithShooter(windows[i])) {
                 this.x = lerp(this.x, windows[i].cX, 0.25);
                 this.y = lerp(this.y, windows[i].cY, 0.25);
