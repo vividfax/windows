@@ -40,7 +40,6 @@ class Powerup {
 
                     if (this.bestowPower(windows[i])) {
                         if (this.type != "expand" && this.type != "health" && this.type != "new" && this.type != "spam") windows[i].animatePowerup = true;
-                        playSoundFromArray("collectPowerup");
                         this.destruct();
                     }
                 }
@@ -100,6 +99,7 @@ class Powerup {
         } else {
             let upgraded = shooter.gun.upgrade(this.type)
             shooter.rename();
+            playSoundFromArray("collectPowerup");
             return upgraded;
         }
     }
