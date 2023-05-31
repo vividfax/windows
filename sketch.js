@@ -33,6 +33,7 @@ let won = false;
 let holdingWindow = false;
 
 let sounds = {};
+let panners = {};
 let soundIndexes = {};
 
 function preload() {
@@ -64,49 +65,70 @@ function preload() {
     cursorImages.grab = loadImage("./images/cursors/grab.png");
 
     sounds.shootBullet = [];
+    panners.shootBullet = [];
     soundIndexes.shootBullet = 0;
     for (let i = 0; i < 8; i++) {
-        sounds.shootBullet.push(new Audio("./sounds/shoot-bullet.wav"));
+        let panner = new Tone.Panner(0).toDestination();
+        sounds.shootBullet.push(new Tone.Player("./sounds/shoot-bullet.wav").connect(panner));
+        panners.shootBullet.push(panner);
     }
 
     sounds.enemyBurst = [];
+    panners.enemyBurst = [];
     soundIndexes.enemyBurst = 0;
     for (let i = 0; i < 8; i++) {
-        sounds.enemyBurst.push(new Audio("./sounds/enemy-burst.wav"));
+        let panner = new Tone.Panner(0).toDestination();
+        sounds.enemyBurst.push(new Tone.Player("./sounds/enemy-burst.wav").connect(panner));
+        panners.enemyBurst.push(panner);
     }
 
     sounds.windowGrow = [];
+    panners.windowGrow = [];
     soundIndexes.windowGrow = 0;
     for (let i = 0; i < 8; i++) {
-        sounds.windowGrow.push(new Audio("./sounds/window-grow.wav"));
+        let panner = new Tone.Panner(0).toDestination();
+        sounds.windowGrow.push(new Tone.Player("./sounds/window-grow.wav").connect(panner));
+        panners.windowGrow.push(panner);
     }
 
     sounds.windowHeal = [];
+    panners.windowHeal = [];
     soundIndexes.windowHeal = 0;
     for (let i = 0; i < 8; i++) {
-        sounds.windowHeal.push(new Audio("./sounds/window-heal.wav"));
+        let panner = new Tone.Panner(0).toDestination();
+        sounds.windowHeal.push(new Tone.Player("./sounds/window-heal.wav").connect(panner));
+        panners.windowHeal.push(panner);
     }
 
     sounds.collectPowerup = [];
+    panners.collectPowerup = [];
     soundIndexes.collectPowerup = 0;
     for (let i = 0; i < 8; i++) {
-        sounds.collectPowerup.push(new Audio("./sounds/collect-powerup.wav"));
+        let panner = new Tone.Panner(0).toDestination();
+        sounds.collectPowerup.push(new Tone.Player("./sounds/collect-powerup.wav").connect(panner));
+        panners.collectPowerup.push(panner);
     }
 
     sounds.newWindow = [];
+    panners.newWindow = [];
     soundIndexes.newWindow = 0;
     for (let i = 0; i < 3; i++) {
-        sounds.newWindow.push(new Audio("./sounds/new-window.wav"));
+        let panner = new Tone.Panner(0).toDestination();
+        sounds.newWindow.push(new Tone.Player("./sounds/new-window.wav").connect(panner));
+        panners.newWindow.push(panner);
     }
 
     sounds.windowDie = [];
+    panners.windowDie = [];
     soundIndexes.windowDie = 0;
     for (let i = 0; i < 3; i++) {
-        sounds.windowDie.push(new Audio("./sounds/window-die.wav"));
+        let panner = new Tone.Panner(0).toDestination();
+        sounds.windowDie.push(new Tone.Player("./sounds/window-die.wav").connect(panner));
+        panners.windowDie.push(panner);
     }
 
-    sounds.rebootButton = new Audio("./sounds/reboot-button.wav");
-    sounds.winGame = new Audio("./sounds/win-game.wav");
+    sounds.rebootButton = new Tone.Player("./sounds/reboot-button.wav").toDestination();
+    sounds.winGame = new Tone.Player("./sounds/win-game.wav").toDestination();
 }
 
 function setup() {
@@ -233,7 +255,7 @@ function mousePressed() {
                 holdingWindow = true;
             } else if (windows[i] instanceof ResetWindow && windows[i].       hoverResetButton()) {
                 newGame();
-                sounds.rebootButton.play();
+                sounds.rebootButton.start();
                 return;
             }
             let thisWindow = windows[i];
@@ -271,7 +293,7 @@ function displayBackground() {
     if (!won && percent > 0.99) {
         won = true;
         windows.push(new ResetWindow());
-        sounds.winGame.play();
+        sounds.winGame.start();
     }
     if (won) percent = 1;
 
@@ -345,9 +367,12 @@ function newGame() {
     }
 }
 
-function playSoundFromArray(name) {
+function playSoundFromArray(name, pan) {
 
-    sounds[name][soundIndexes[name]].play();
+    if (pan != null) {
+        panners[name][soundIndexes[name]].pan.setValueAtTime(pan, 0);
+    }
+    sounds[name][soundIndexes[name]].start();
     soundIndexes[name]++;
     if (soundIndexes[name] >= sounds[name].length) soundIndexes[name] = 0;
     return soundIndexes[name];

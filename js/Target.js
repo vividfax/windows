@@ -68,7 +68,8 @@ class Target {
 
             score++;
 
-            playSoundFromArray("enemyBurst");
+            let pan = (this.x/width*2)-1;
+            playSoundFromArray("enemyBurst", pan);
         }
 
         sprays.push(new Spray(this.x, this.y, 15, 15));

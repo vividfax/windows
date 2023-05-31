@@ -202,7 +202,8 @@ class Window {
             }
         // }
 
-        playSoundFromArray("shootBullet");
+        let pan = (this.cX/width*2)-1;
+        playSoundFromArray("shootBullet", pan);
     }
 
     grow() {
@@ -228,6 +229,8 @@ class Window {
 
     hurt() {
 
+        let pan = (this.cX/width*2)-1;
+
         this.losingHealth = false;
 
         if (this.health <= 0) return;
@@ -241,7 +244,7 @@ class Window {
         }
 
         // if (this.losingHealth) {
-        //     playSoundFromArray("windowHurt");
+        //     playSoundFromArray("windowHurt", pan);
         // }
 
         if (this.visualHealth+0.3 < this.health) {
@@ -252,7 +255,7 @@ class Window {
             this.dead = true;
             score -= 10;
             if (score < 0) score = 0;
-            playSoundFromArray("windowDie");
+            playSoundFromArray("windowDie", pan);
         }
     }
 

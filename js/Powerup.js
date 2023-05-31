@@ -79,22 +79,26 @@ class Powerup {
 
     bestowPower(shooter) {
 
+        let pan = (this.x/width*2)-1;
+
         if (this.type == "expand") {
             shooter.levelGrowth += 30;
             shooter.health += 10;
             shooter.visualHealth += 10;
             shooter.maxHealth += 10;
-            playSoundFromArray("windowGrow");
+            playSoundFromArray("windowGrow", pan);
             return true;
         } else if (this.type == "health") {
             if (shooter.health >= shooter.maxHealth) return false;
             shooter.health += 30;
             if (shooter.health > shooter.maxHealth) shooter.health = shooter.maxHealth;
-            playSoundFromArray("windowHeal");
+            playSoundFromArray("windowHeal", pan);
             return true;
         } else if (this.type == "new") {
-            windows.push(new Window(windows.length%targetColours.length));
-            playSoundFromArray("newWindow");
+            let newWindow = new Window(windows.length%targetColours.length);
+            windows.push(newWindow);
+            pan = (newWindow.cX/width*2)-1;
+            playSoundFromArray("newWindow", pan);
             return true;
         } else if (this.type == "spam") {
             windows.push(new SpamWindow());
@@ -102,7 +106,7 @@ class Powerup {
         } else {
             let upgraded = shooter.gun.upgrade(this.type)
             shooter.rename();
-            playSoundFromArray("collectPowerup");
+            playSoundFromArray("collectPowerup", pan);
             return upgraded;
         }
     }
