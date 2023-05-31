@@ -32,6 +32,9 @@ let won = false;
 
 let holdingWindow = false;
 
+let sounds = {};
+let soundIndexes = {};
+
 function preload() {
 
     macFont = loadFont("./fonts/VT323-Regular.ttf");
@@ -59,6 +62,12 @@ function preload() {
     cursorImages.arrow = loadImage("./images/cursors/arrow.png");
     cursorImages.point = loadImage("./images/cursors/point.png");
     cursorImages.grab = loadImage("./images/cursors/grab.png");
+
+    sounds.collectPowerup = [];
+    soundIndexes.collectPowerup = 0;
+    for (let i = 0; i < 8; i++) {
+        sounds.collectPowerup.push(new Audio("./sounds/collect-powerup.wav"));
+    }
 }
 
 function setup() {
@@ -293,4 +302,12 @@ function newGame() {
         }
         targets.push(new Target(x, y));
     }
+}
+
+function playSoundFromArray(name) {
+
+    sounds[name][soundIndexes[name]].play();
+    soundIndexes[name]++;
+    if (soundIndexes[name] >= sounds[name].length) soundIndexes[name] = 0;
+    return soundIndexes[name];
 }

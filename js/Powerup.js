@@ -40,6 +40,7 @@ class Powerup {
 
                     if (this.bestowPower(windows[i])) {
                         if (this.type != "expand" && this.type != "health" && this.type != "new" && this.type != "spam") windows[i].animatePowerup = true;
+                        playSoundFromArray("collectPowerup");
                         this.destruct();
                     }
                 }
