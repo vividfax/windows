@@ -84,14 +84,17 @@ class Powerup {
             shooter.health += 10;
             shooter.visualHealth += 10;
             shooter.maxHealth += 10;
+            playSoundFromArray("windowGrow");
             return true;
         } else if (this.type == "health") {
             if (shooter.health >= shooter.maxHealth) return false;
             shooter.health += 30;
             if (shooter.health > shooter.maxHealth) shooter.health = shooter.maxHealth;
+            playSoundFromArray("windowHeal");
             return true;
         } else if (this.type == "new") {
             windows.push(new Window(windows.length%targetColours.length));
+            playSoundFromArray("newWindow");
             return true;
         } else if (this.type == "spam") {
             windows.push(new SpamWindow());

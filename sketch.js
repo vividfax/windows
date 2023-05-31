@@ -63,16 +63,34 @@ function preload() {
     cursorImages.point = loadImage("./images/cursors/point.png");
     cursorImages.grab = loadImage("./images/cursors/grab.png");
 
+    sounds.shootBullet = [];
+    soundIndexes.shootBullet = 0;
+    for (let i = 0; i < 8; i++) {
+        sounds.shootBullet.push(new Audio("./sounds/shoot-bullet.wav"));
+    }
+
+    sounds.windowGrow = [];
+    soundIndexes.windowGrow = 0;
+    for (let i = 0; i < 8; i++) {
+        sounds.windowGrow.push(new Audio("./sounds/window-grow.wav"));
+    }
+
+    sounds.windowHeal = [];
+    soundIndexes.windowHeal = 0;
+    for (let i = 0; i < 8; i++) {
+        sounds.windowHeal.push(new Audio("./sounds/window-heal.wav"));
+    }
+
     sounds.collectPowerup = [];
     soundIndexes.collectPowerup = 0;
     for (let i = 0; i < 8; i++) {
         sounds.collectPowerup.push(new Audio("./sounds/collect-powerup.wav"));
     }
 
-    sounds.shootBullet = [];
-    soundIndexes.shootBullet = 0;
-    for (let i = 0; i < 8; i++) {
-        sounds.shootBullet.push(new Audio("./sounds/shoot-bullet.wav"));
+    sounds.newWindow = [];
+    soundIndexes.newWindow = 0;
+    for (let i = 0; i < 3; i++) {
+        sounds.newWindow.push(new Audio("./sounds/new-window.wav"));
     }
 }
 
