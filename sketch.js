@@ -69,6 +69,12 @@ function preload() {
         sounds.shootBullet.push(new Audio("./sounds/shoot-bullet.wav"));
     }
 
+    sounds.enemyBurst = [];
+    soundIndexes.enemyBurst = 0;
+    for (let i = 0; i < 8; i++) {
+        sounds.enemyBurst.push(new Audio("./sounds/enemy-burst.wav"));
+    }
+
     sounds.windowGrow = [];
     soundIndexes.windowGrow = 0;
     for (let i = 0; i < 8; i++) {
@@ -92,6 +98,14 @@ function preload() {
     for (let i = 0; i < 3; i++) {
         sounds.newWindow.push(new Audio("./sounds/new-window.wav"));
     }
+
+    sounds.windowDie = [];
+    soundIndexes.windowDie = 0;
+    for (let i = 0; i < 3; i++) {
+        sounds.windowDie.push(new Audio("./sounds/window-die.wav"));
+    }
+
+    sounds.rebootButton = new Audio("./sounds/reboot-button.wav");
 }
 
 function setup() {
@@ -218,6 +232,7 @@ function mousePressed() {
                 holdingWindow = true;
             } else if (windows[i] instanceof ResetWindow && windows[i].       hoverResetButton()) {
                 newGame();
+                sounds.rebootButton.play();
                 return;
             }
             let thisWindow = windows[i];

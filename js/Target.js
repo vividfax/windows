@@ -67,6 +67,8 @@ class Target {
             }
 
             score++;
+
+            playSoundFromArray("enemyBurst");
         }
 
         sprays.push(new Spray(this.x, this.y, 15, 15));

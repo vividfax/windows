@@ -240,6 +240,10 @@ class Window {
             }
         }
 
+        // if (this.losingHealth) {
+        //     playSoundFromArray("windowHurt");
+        // }
+
         if (this.visualHealth+0.3 < this.health) {
             this.visualHealth += 0.3;
         }
@@ -248,6 +252,7 @@ class Window {
             this.dead = true;
             score -= 10;
             if (score < 0) score = 0;
+            playSoundFromArray("windowDie");
         }
     }
 
