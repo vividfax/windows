@@ -68,6 +68,12 @@ function preload() {
     for (let i = 0; i < 8; i++) {
         sounds.collectPowerup.push(new Audio("./sounds/collect-powerup.wav"));
     }
+
+    sounds.shootBullet = [];
+    soundIndexes.shootBullet = 0;
+    for (let i = 0; i < 8; i++) {
+        sounds.shootBullet.push(new Audio("./sounds/shoot-bullet.wav"));
+    }
 }
 
 function setup() {

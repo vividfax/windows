@@ -201,6 +201,8 @@ class Window {
                 bullets.push(new Bullet(this.cX, this.cY, v.x, v.y, this, gun.shotSize));
             }
         // }
+
+        playSoundFromArray("shootBullet");
     }
 
     grow() {
