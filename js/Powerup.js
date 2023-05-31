@@ -106,7 +106,7 @@ class Powerup {
         } else {
             let upgraded = shooter.gun.upgrade(this.type)
             shooter.rename();
-            playSoundFromArray("collectPowerup", pan);
+            if (upgraded) playSoundFromArray("collectPowerup", pan);
             return upgraded;
         }
     }
