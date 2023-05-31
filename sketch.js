@@ -106,6 +106,7 @@ function preload() {
     }
 
     sounds.rebootButton = new Audio("./sounds/reboot-button.wav");
+    sounds.winGame = new Audio("./sounds/win-game.wav");
 }
 
 function setup() {
@@ -270,6 +271,7 @@ function displayBackground() {
     if (!won && percent > 0.99) {
         won = true;
         windows.push(new ResetWindow());
+        sounds.winGame.play();
     }
     if (won) percent = 1;
 
