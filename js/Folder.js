@@ -87,6 +87,10 @@ class Folder {
         if (this.downloadProgress > this.downloadMax) this.downloadProgress = this.downloadMax;
         else if (this.downloadProgress < 0) this.downloadProgress = 0;
 
+        if (downloading && this.downloadProgress >= 100) {
+            downloading = false;
+        }
+
         if (downloading && !this.downloadSoundPlaying) {
             this.downloadSoundPlaying = true;
             this.downloadSound.start();
