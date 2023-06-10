@@ -70,6 +70,12 @@ class Window {
 
         this.animatePowerup = false;
         this.animatePowerupTimer = -this.w-(this.w+this.h)/4;
+
+        this.panner = new Tone.Panner(0).toDestination();
+        this.hurtingSound = new Tone.Player("./sounds/window-hurt.wav").connect(this.panner);
+        this.hurtingSound.loop = true;
+
+        this.hurtingSoundPlaying = false;
     }
 
     update() {
@@ -243,9 +249,17 @@ class Window {
             }
         }
 
-        // if (this.losingHealth) {
-        //     playSoundFromArray("windowHurt", pan);
-        // }
+        if (this.losingHealth && !this.hurtingSoundPlaying) {
+            this.hurtingSoundPlaying = true;
+            this.hurtingSound.start();
+        } else if (!this.losingHealth && this.hurtingSoundPlaying) {
+            this.hurtingSoundPlaying = false;
+            this.hurtingSound.stop();
+        }
+
+        if (this.hurtingSoundPlaying) {
+            this.panner.pan.setValueAtTime(pan, 0);
+        }
 
         if (this.visualHealth+0.3 < this.health) {
             this.visualHealth += 0.3;
@@ -256,6 +270,10 @@ class Window {
             score -= 10;
             if (score < 0) score = 0;
             playSoundFromArray("windowDie", pan);
+            if (this.hurtingSoundPlaying) {
+                this.hurtingSoundPlaying = false;
+                this.hurtingSound.stop();
+            }
         }
     }
 

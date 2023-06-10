@@ -25,6 +25,14 @@ class Folder {
         for (let i = -300; i < 0; i++) {
             this.move(i);
         }
+
+        this.panner = new Tone.Panner(0).toDestination();
+        this.downloadSound = new Tone.Player("./sounds/download-folder.wav").connect(this.panner);
+        this.downloadSound.loop = true;
+        let pan = (this.x/width*2)-1;
+        this.panner.pan.setValueAtTime(pan, 0);
+
+        this.downloadSoundPlaying = false;
     }
 
     update() {
@@ -62,6 +70,8 @@ class Folder {
 
     download() {
 
+        if (!this.downloadable) return;
+
         let downloading = false;
 
         for (let i = 0; i < windows.length; i++) {
@@ -76,6 +86,14 @@ class Folder {
 
         if (this.downloadProgress > this.downloadMax) this.downloadProgress = this.downloadMax;
         else if (this.downloadProgress < 0) this.downloadProgress = 0;
+
+        if (downloading && !this.downloadSoundPlaying) {
+            this.downloadSoundPlaying = true;
+            this.downloadSound.start();
+        } else if (!downloading && this.downloadSoundPlaying) {
+            this.downloadSoundPlaying = false;
+            this.downloadSound.stop();
+        }
     }
 
     collideWithShooter(collider) {
