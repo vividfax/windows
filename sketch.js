@@ -82,6 +82,15 @@ function preload() {
         panners.enemyBurst.push(panner);
     }
 
+    sounds.enemyHurt = [];
+    panners.enemyHurt = [];
+    soundIndexes.enemyHurt = 0;
+    for (let i = 0; i < 18; i++) {
+        let panner = new Tone.Panner(0).toDestination();
+        sounds.enemyHurt.push(new Tone.Player("./sounds/enemy-hurt.wav").connect(panner));
+        panners.enemyHurt.push(panner);
+    }
+
     sounds.windowGrow = [];
     panners.windowGrow = [];
     soundIndexes.windowGrow = 0;
@@ -372,7 +381,7 @@ function playSoundFromArray(name, pan) {
     if (pan != null) {
         panners[name][soundIndexes[name]].pan.setValueAtTime(pan, 0);
     }
-    sounds[name][soundIndexes[name]].start();
+    if (sounds[name][soundIndexes[name]].state == "stopped") sounds[name][soundIndexes[name]].start();
     soundIndexes[name]++;
     if (soundIndexes[name] >= sounds[name].length) soundIndexes[name] = 0;
     return soundIndexes[name];

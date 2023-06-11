@@ -26,6 +26,9 @@ class Bullet {
                 if (targets[i].radius <= 10) {
                     this.shooter.xp++;
                     targets[i].destruct();
+                } else {
+                    let pan = (this.x/width*2)-1;
+                    playSoundFromArray("enemyHurt", pan);
                 }
                 this.destruct();
             }

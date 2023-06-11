@@ -31,8 +31,11 @@ class Folder {
         this.downloadSound.loop = true;
         let pan = (this.x/width*2)-1;
         this.panner.pan.setValueAtTime(pan, 0);
-
         this.downloadSoundPlaying = false;
+
+        this.undownloadSound = new Tone.Player("./sounds/undownload-folder.wav").connect(this.panner);
+        this.undownloadSound.loop = true;
+        this.undownloadSoundPlaying = false;
     }
 
     update() {
@@ -97,6 +100,14 @@ class Folder {
         } else if (!downloading && this.downloadSoundPlaying) {
             this.downloadSoundPlaying = false;
             this.downloadSound.stop();
+        }
+
+        if (!downloading && this.downloadProgress > 0 && this.downloadProgress < 100 && !this.undownloadSoundPlaying) {
+            this.undownloadSoundPlaying = true;
+            this.undownloadSound.start();
+        } else if (this.undownloadSoundPlaying && (this.downloadProgress <= 0 || downloading)) {
+            this.undownloadSoundPlaying = false;
+            this.undownloadSound.stop();
         }
     }
 
