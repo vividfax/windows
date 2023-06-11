@@ -94,6 +94,18 @@ class Folder {
             downloading = false;
         }
 
+        if (won) {
+            if (this.downloadSoundPlaying) {
+                this.downloadSoundPlaying = false;
+                this.downloadSound.stop();
+            }
+            if (this.undownloadSoundPlaying) {
+                this.undownloadSoundPlaying = false;
+                this.undownloadSound.stop();
+            }
+            return;
+        }
+
         if (downloading && !this.downloadSoundPlaying) {
             this.downloadSoundPlaying = true;
             this.downloadSound.start();
