@@ -138,6 +138,9 @@ function preload() {
 
     sounds.rebootButton = new Tone.Player("./sounds/reboot-button.wav").toDestination();
     sounds.winGame = new Tone.Player("./sounds/win-game.wav").toDestination();
+
+    sounds.music = new Audio("./sounds/windowsdefender-music.ogg");
+    sounds.music.loop = true;
 }
 
 function setup() {
@@ -256,7 +259,10 @@ function mousePressed() {
 
     for (let i = windows.length-1; i >= 0; i--) {
 
-        if (!interacted) interacted = true;
+        if (!interacted) {
+            interacted = true;
+            sounds.music.play();
+        }
         if (windows[i].hover()) {
             if (windows[i].hoverBar()) {
                 windows[i].moving = true;
