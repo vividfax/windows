@@ -258,12 +258,12 @@ function mousePressed() {
     }
 
     for (let i = windows.length-1; i >= 0; i--) {
-
-        if (!interacted) {
-            interacted = true;
-            sounds.music.play();
-        }
         if (windows[i].hover()) {
+
+            if (!interacted) {
+                interacted = true;
+                sounds.music.play();
+            }
             if (windows[i].hoverBar()) {
                 windows[i].moving = true;
                 cursorImage = cursorImages.grab;
