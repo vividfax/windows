@@ -308,7 +308,7 @@ function displayBackground() {
         percent += folders[i].downloadProgress/folders[i].downloadMax/(3*2);
     }
 
-    percent += 5/6;
+    // percent += 5/6;
 
     if (!won && percent > 5/6) {
         sounds.music.volume = 1-percent%(1/6)*6;
