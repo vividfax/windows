@@ -177,6 +177,7 @@ function draw() {
         if (allDead) {
             resetWindowVisible = true;
             windows.push(new ResetWindow());
+            sounds.music.pause();
         }
     }
 
@@ -262,6 +263,8 @@ function mousePressed() {
 
             if (!interacted) {
                 interacted = true;
+                sounds.music.currentTime = 0;
+                sounds.music.volume = 1;
                 sounds.music.play();
             }
             if (windows[i].hoverBar()) {
@@ -305,10 +308,17 @@ function displayBackground() {
         percent += folders[i].downloadProgress/folders[i].downloadMax/(3*2);
     }
 
+    percent += 5/6;
+
+    if (!won && percent > 5/6) {
+        sounds.music.volume = 1-percent%(1/6)*6;
+    }
+
     if (!won && percent > 0.99) {
         won = true;
         windows.push(new ResetWindow());
         sounds.winGame.start();
+        sounds.music.pause();
     }
     if (won) percent = 1;
 
