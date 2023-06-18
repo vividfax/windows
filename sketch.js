@@ -56,9 +56,9 @@ function preload() {
 
     }
 
-    for (let i = 0; i < 10; i++) {
-        spamImages.push(loadImage("./images/spam/"+i+".png"));
-    }
+    // for (let i = 0; i < 10; i++) {
+    //     spamImages.push(loadImage("./images/spam/"+i+".png"));
+    // }
 
     cursorImages.arrow = loadImage("./images/cursors/arrow.png");
     cursorImages.point = loadImage("./images/cursors/point.png");

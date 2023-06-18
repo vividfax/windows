@@ -274,6 +274,8 @@ class Window {
                 this.hurtingSoundPlaying = false;
                 this.hurtingSound.stop();
             }
+            newWindowCount = 0;
+            newWindowInterval /= 1.7;
         }
     }
 
