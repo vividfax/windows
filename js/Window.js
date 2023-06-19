@@ -71,7 +71,7 @@ class Window {
         this.animatePowerup = false;
         this.animatePowerupTimer = -this.w-(this.w+this.h)/4;
 
-        this.panner = new Tone.Panner(0).toDestination();
+        this.panner = new Tone.Panner(0).connect(gainNode);
         this.hurtingSound = new Tone.Player("./sounds/window-hurt.wav").connect(this.panner);
         this.hurtingSound.loop = true;
 

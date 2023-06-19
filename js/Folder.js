@@ -26,7 +26,7 @@ class Folder {
             this.move(i);
         }
 
-        this.panner = new Tone.Panner(0).toDestination();
+        this.panner = new Tone.Panner(0).connect(gainNode);
         this.downloadSound = new Tone.Player("./sounds/download-folder.wav").connect(this.panner);
         this.downloadSound.loop = true;
         let pan = (this.x/width*2)-1;

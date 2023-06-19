@@ -35,6 +35,10 @@ let holdingWindow = false;
 let sounds = {};
 let panners = {};
 let soundIndexes = {};
+let gainNode;
+
+let musicVolume = 0.8;
+let sfxVolume = 0.9;
 
 function preload() {
 
@@ -64,11 +68,14 @@ function preload() {
     cursorImages.point = loadImage("./images/cursors/point.png");
     cursorImages.grab = loadImage("./images/cursors/grab.png");
 
+    gainNode = new Tone.Gain(0).toDestination();
+    gainNode.gain.rampTo(sfxVolume, 0);
+
     sounds.shootBullet = [];
     panners.shootBullet = [];
     soundIndexes.shootBullet = 0;
     for (let i = 0; i < 8; i++) {
-        let panner = new Tone.Panner(0).toDestination();
+        let panner = new Tone.Panner(0).connect(gainNode);
         sounds.shootBullet.push(new Tone.Player("./sounds/shoot-bullet.wav").connect(panner));
         panners.shootBullet.push(panner);
     }
@@ -77,7 +84,7 @@ function preload() {
     panners.enemyBurst = [];
     soundIndexes.enemyBurst = 0;
     for (let i = 0; i < 8; i++) {
-        let panner = new Tone.Panner(0).toDestination();
+        let panner = new Tone.Panner(0).connect(gainNode);
         sounds.enemyBurst.push(new Tone.Player("./sounds/enemy-burst.wav").connect(panner));
         panners.enemyBurst.push(panner);
     }
@@ -86,7 +93,7 @@ function preload() {
     panners.enemyHurt = [];
     soundIndexes.enemyHurt = 0;
     for (let i = 0; i < 18; i++) {
-        let panner = new Tone.Panner(0).toDestination();
+        let panner = new Tone.Panner(0).connect(gainNode);
         sounds.enemyHurt.push(new Tone.Player("./sounds/enemy-hurt.wav").connect(panner));
         panners.enemyHurt.push(panner);
     }
@@ -95,7 +102,7 @@ function preload() {
     panners.windowGrow = [];
     soundIndexes.windowGrow = 0;
     for (let i = 0; i < 8; i++) {
-        let panner = new Tone.Panner(0).toDestination();
+        let panner = new Tone.Panner(0).connect(gainNode);
         sounds.windowGrow.push(new Tone.Player("./sounds/window-grow.wav").connect(panner));
         panners.windowGrow.push(panner);
     }
@@ -104,7 +111,7 @@ function preload() {
     panners.windowHeal = [];
     soundIndexes.windowHeal = 0;
     for (let i = 0; i < 8; i++) {
-        let panner = new Tone.Panner(0).toDestination();
+        let panner = new Tone.Panner(0).connect(gainNode);
         sounds.windowHeal.push(new Tone.Player("./sounds/window-heal.wav").connect(panner));
         panners.windowHeal.push(panner);
     }
@@ -113,7 +120,7 @@ function preload() {
     panners.collectPowerup = [];
     soundIndexes.collectPowerup = 0;
     for (let i = 0; i < 8; i++) {
-        let panner = new Tone.Panner(0).toDestination();
+        let panner = new Tone.Panner(0).connect(gainNode);
         sounds.collectPowerup.push(new Tone.Player("./sounds/collect-powerup.wav").connect(panner));
         panners.collectPowerup.push(panner);
     }
@@ -122,7 +129,7 @@ function preload() {
     panners.newWindow = [];
     soundIndexes.newWindow = 0;
     for (let i = 0; i < 3; i++) {
-        let panner = new Tone.Panner(0).toDestination();
+        let panner = new Tone.Panner(0).connect(gainNode);
         sounds.newWindow.push(new Tone.Player("./sounds/new-window.wav").connect(panner));
         panners.newWindow.push(panner);
     }
@@ -131,13 +138,13 @@ function preload() {
     panners.windowDie = [];
     soundIndexes.windowDie = 0;
     for (let i = 0; i < 3; i++) {
-        let panner = new Tone.Panner(0).toDestination();
+        let panner = new Tone.Panner(0).connect(gainNode);
         sounds.windowDie.push(new Tone.Player("./sounds/window-die.wav").connect(panner));
         panners.windowDie.push(panner);
     }
 
-    sounds.rebootButton = new Tone.Player("./sounds/reboot-button.wav").toDestination();
-    sounds.winGame = new Tone.Player("./sounds/win-game.wav").toDestination();
+    sounds.rebootButton = new Tone.Player("./sounds/reboot-button.wav").connect(gainNode);
+    sounds.winGame = new Tone.Player("./sounds/win-game.wav").connect(gainNode);
 
     sounds.music = new Audio("./sounds/windowsdefender-music.ogg");
     sounds.music.loop = true;
@@ -264,7 +271,7 @@ function mousePressed() {
             if (!interacted) {
                 interacted = true;
                 sounds.music.currentTime = 0;
-                sounds.music.volume = 1;
+                sounds.music.volume = musicVolume;
                 sounds.music.play();
             }
             if (windows[i].hoverBar()) {
@@ -311,7 +318,7 @@ function displayBackground() {
     // percent += 5/6;
 
     if (!won && percent > 5/6) {
-        sounds.music.volume = 1-percent%(1/6)*6;
+        sounds.music.volume = (1-percent%(1/6)*6)*musicVolume;
     }
 
     if (!won && percent > 0.99) {
