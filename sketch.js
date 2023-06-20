@@ -4,6 +4,7 @@ let targets = [];
 let bullets = [];
 let sprays = [];
 let powerups = [];
+let resetWindow = 0;
 
 let targetTimer = 60*5;
 let newWindowCount = 0;
@@ -183,7 +184,7 @@ function draw() {
 
         if (allDead) {
             resetWindowVisible = true;
-            windows.push(new ResetWindow());
+            resetWindow = new ResetWindow();
             sounds.music.pause();
         }
     }
@@ -209,6 +210,11 @@ function draw() {
 
     if (!holdingWindow) cursorImage = cursorImages.arrow;
 
+    if (resetWindow != 0) {
+        resetWindow.update();
+        if ((resetWindow.hoverBar() || resetWindow.hoverResetButton()) && !holdingWindow) cursorImage = cursorImages.point;
+    }
+
     for (let i = 0; i < windows.length; i++) {
         windows[i].update();
         if (windows[i].hoverBar() && !holdingWindow) cursorImage = cursorImages.point;
@@ -229,6 +235,10 @@ function draw() {
         else displayLater = windows[i];
     }
     if (displayLater != -1) displayLater.display();
+
+    if (resetWindow != 0) {
+        resetWindow.display();
+    }
 
     if (frameCount%targetTimer == 0 && interacted && !won) {
         targets.push(new Target());
@@ -251,6 +261,12 @@ function mousePressed() {
 
     if (holdingWindow) {
 
+        if (resetWindow != 0) {
+            if (resetWindow.moving) {
+                resetWindow.moving = false;
+            }
+        }
+
         for (let i = 0; i < windows.length; i++) {
             if (windows[i].moving) {
                 let thisWindow = windows[i];
@@ -263,6 +279,29 @@ function mousePressed() {
         cursorImage = cursorImages.arrow;
         holdingWindow = false;
         return;
+    }
+
+    if (resetWindow != 0) {
+        if (resetWindow.hover()) {
+
+            if (!interacted) {
+                interacted = true;
+                sounds.music.currentTime = 0;
+                sounds.music.volume = musicVolume;
+                sounds.music.play();
+                gainNode.gain.rampTo(sfxVolume, 0);
+            }
+            if (resetWindow.hoverBar()) {
+                resetWindow.moving = true;
+                cursorImage = cursorImages.grab;
+                holdingWindow = true;
+            } else if (resetWindow.hoverResetButton()) {
+                newGame();
+                sounds.rebootButton.start();
+                return;
+            }
+            return;
+        }
     }
 
     for (let i = windows.length-1; i >= 0; i--) {
@@ -279,10 +318,6 @@ function mousePressed() {
                 windows[i].moving = true;
                 cursorImage = cursorImages.grab;
                 holdingWindow = true;
-            } else if (windows[i] instanceof ResetWindow && windows[i].       hoverResetButton()) {
-                newGame();
-                sounds.rebootButton.start();
-                return;
             }
             let thisWindow = windows[i];
             windows.splice(i, 1);
@@ -324,7 +359,7 @@ function displayBackground() {
 
     if (!won && percent > 0.99) {
         won = true;
-        windows.push(new ResetWindow());
+        resetWindow = new ResetWindow();
         sounds.winGame.start();
         sounds.music.pause();
     }
@@ -348,6 +383,7 @@ function newGame() {
     bullets = [];
     sprays = [];
     powerups = [];
+    resetWindow = 0;
 
     targetTimer = 60*5;
     newWindowCount = 0;

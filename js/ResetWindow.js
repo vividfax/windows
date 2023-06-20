@@ -87,13 +87,13 @@ class ResetWindow {
         this.canvas.translate(0, 30);
 
         this.canvas.fill(255);
-        if (this.hoverResetButton()) this.canvas.fill(0);
+        if (this.hoverResetButton() && !holdingWindow) this.canvas.fill(0);
         this.canvas.rectMode(CENTER);
         this.canvas.rect(this.w/2, this.h/2, 100, 40, 2);
         this.canvas.rectMode(CORNER);
         this.canvas.noStroke();
         this.canvas.fill(0);
-        if (this.hoverResetButton()) this.canvas.fill(255);
+        if (this.hoverResetButton() && !holdingWindow) this.canvas.fill(255);
         this.canvas.textAlign(CENTER);
         let string = won ? "NEW GAME" : "REBOOT";
         this.canvas.text(string, this.w/2, this.h/2+4);
