@@ -69,7 +69,7 @@ function preload() {
     cursorImages.grab = loadImage("./images/cursors/grab.png");
 
     gainNode = new Tone.Gain(0).toDestination();
-    gainNode.gain.rampTo(sfxVolume, 0);
+    gainNode.gain.rampTo(0, 0);
 
     sounds.shootBullet = [];
     panners.shootBullet = [];
@@ -273,6 +273,7 @@ function mousePressed() {
                 sounds.music.currentTime = 0;
                 sounds.music.volume = musicVolume;
                 sounds.music.play();
+                gainNode.gain.rampTo(sfxVolume, 0);
             }
             if (windows[i].hoverBar()) {
                 windows[i].moving = true;
