@@ -438,6 +438,9 @@ function newGame() {
 
 function playSoundFromArray(name, pan) {
 
+    if (pan > 1) pan = 1;
+    else if (pan < -1) pan = -1;
+
     if (pan != null) {
         panners[name][soundIndexes[name]].pan.setValueAtTime(pan, 0);
     }
