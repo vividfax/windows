@@ -30,6 +30,8 @@ class Folder {
         this.downloadSound = new Tone.Player("./sounds/download-folder.wav").connect(this.panner);
         this.downloadSound.loop = true;
         let pan = (this.x/width*2)-1;
+        if (pan > 1) pan = 1;
+        else if (pan < -1) pan = -1;
         this.panner.pan.setValueAtTime(pan, 0);
         this.downloadSoundPlaying = false;
 

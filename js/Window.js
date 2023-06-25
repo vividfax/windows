@@ -236,6 +236,8 @@ class Window {
     hurt() {
 
         let pan = (this.cX/width*2)-1;
+        if (pan > 1) pan = 1;
+        else if (pan < -1) pan = -1;
 
         this.losingHealth = false;
 
